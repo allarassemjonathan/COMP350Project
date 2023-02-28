@@ -58,6 +58,4 @@ public class Student {
         this.semester = semester;
         this.schedules = new ArrayList<>();
     }
-
-    // Other Methods
 }

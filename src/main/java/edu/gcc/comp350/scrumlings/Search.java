@@ -34,4 +34,7 @@ public class Search {
     public void removeFilter(String type, String filter) {
 
     }
+    public ArrayList<Courses> searchCourses() {
+        return null;
+    }
 }
