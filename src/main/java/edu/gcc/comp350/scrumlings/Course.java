@@ -1,5 +1,7 @@
 package edu.gcc.comp350.scrumlings;
 
+import java.util.Date;
+
 public class Course {
     // Member variables
     private String title;
@@ -9,6 +11,9 @@ public class Course {
     private int courseNum;
     private char section;
 
+    public Course(){
+
+    }
     // Getters and Setters
     public String getTitle() {
         return title;

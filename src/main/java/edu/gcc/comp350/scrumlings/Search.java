@@ -1,5 +1,6 @@
 package edu.gcc.comp350.scrumlings;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -34,7 +35,7 @@ public class Search {
     public void removeFilter(String type, String filter) {
 
     }
-    public ArrayList<Courses> searchCourses() {
+    public ArrayList<Course> searchCourses() {
         return null;
     }
 }

@@ -41,8 +41,13 @@ public class Driver {
         this.search = search;
     }
 
-    // Other Methods
-    public static void main(String[] args) {
-        System.out.println("Hello World");
+    public String DisplaySchedule(){
+        Course course_1 = new Course();
+        return "";
     }
+
+    // Other Methods
+   public static void main(String[] args){
+
+   }
 }
