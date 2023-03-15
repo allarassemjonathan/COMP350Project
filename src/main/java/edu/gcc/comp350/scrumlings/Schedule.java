@@ -1,10 +1,10 @@
 package edu.gcc.comp350.scrumlings;
 
-import java.util.Arraylist;
+import java.util.ArrayList;
 
 class Schedule {
     // Member Variables
-    private ArrayList<Courses> courses;
+    private ArrayList<Course> courses;
     private String title;
     private String path;
 
@@ -16,10 +16,10 @@ class Schedule {
     }
 
     // Getters and Setters
-    public ArrayList<Courses> getCourses() {
+    public ArrayList<Course> getCourses() {
         return courses;
     }
-    public void setCourses(ArrayList<Courses> courses) {
+    public void setCourses(ArrayList<Course> courses) {
         this.courses = courses;
     }
     public String getTitle() {
