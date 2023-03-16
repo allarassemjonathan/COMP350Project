@@ -1,6 +1,6 @@
 package edu.gcc.comp350.scrumlings;
 
-public static class Generator {
+public class Generator {
     public static Schedule generateSchedule(int semester, String major) {
         return null;
     }
