@@ -1,5 +1,7 @@
 package edu.gcc.comp350.scrumlings;
 
+import java.util.Date;
+
 public class Course {
     // Member variables
     private String title;

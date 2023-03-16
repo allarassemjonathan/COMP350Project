@@ -1,11 +1,16 @@
 package edu.gcc.comp350.scrumlings;
 
+import java.util.Scanner;
+
 public class Driver {
     // Member Variables
     private Student student;
     private Schedule schedule;
     private Generator generator;
     private Search search;
+    private static Scanner scnr = new Scanner(System.in);
+    private static String userInput = "";
+    private static String help = "Write list of commands and what they do in this string";
 
     // Constructor
     public Driver(Student student, Schedule schedule, Generator generator, Search search) {
@@ -43,6 +48,30 @@ public class Driver {
 
     // Other Methods
     public static void main(String[] args) {
-        System.out.println("Hello World");
+        // init
+        // main loop
+        while (true) {
+            userInput = scnr.nextLine();
+            // quitting
+            if (userInput.equalsIgnoreCase("quit")) {
+                System.out.println("Are you sure you want to quit?");
+                userInput = scnr.nextLine();
+                if(userInput.equalsIgnoreCase("yes")) {
+                    break;
+                }
+            }
+            // helping
+            else if (userInput.equalsIgnoreCase("help")) {
+                System.out.println(help);
+            }
+            // add commands here with an else if (userInput.equalsIgnoreCase([COMMAND])) {}
+            // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            else {
+                System.out.println("Sorry, that command was not recognized. Type 'help' if you are " +
+                        "confused to get a list of all valid commands and their function");
+            }
+        }
+        // termination processes go here
+        System.out.println("Closing program, thank you!");
     }
 }
