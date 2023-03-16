@@ -1,5 +1,6 @@
 package edu.gcc.comp350.scrumlings;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -29,12 +30,27 @@ public class Search {
 
     // Other Methods
     public void addFilter(String type, String filter) {
+        //1. Update the filters
+        List<String> newFilter = getFilters().get(type);
+        newFilter.add(filter);
+        HashMap<String, List<String>> updated = getFilters();
+        //adds new filter if type exists, otherwise adds new type
+        if (updated.containsKey(type)) {
+            updated.replace(type, newFilter);
+        }
+        else {
+            updated.put(type, newFilter);
+        }
+        setFilters(updated);
+
+        //2. Update the course list with new filters
+        //a. Search by title
 
     }
     public void removeFilter(String type, String filter) {
 
     }
-    public ArrayList<Courses> searchCourses() {
+    public ArrayList<Course> searchCourses() {
         return null;
     }
 }
