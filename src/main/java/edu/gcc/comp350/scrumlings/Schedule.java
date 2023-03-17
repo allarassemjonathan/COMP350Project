@@ -6,12 +6,14 @@ class Schedule {
     // Member Variables
     private ArrayList<Course> courses;
     private String title;
-    private String path;
 
-    // Constructor
-    public Schedule(String title, String path) {
+    // Constructors
+    public Schedule(String title) {
         this.title = title;
-        this.path = path;
+        courses = new ArrayList<>();
+    }
+
+    public Schedule() {
         courses = new ArrayList<>();
     }
 
@@ -27,12 +29,6 @@ class Schedule {
     }
     public void setTitle(String title) {
         this.title = title;
-    }
-    public String getPath() {
-        return path;
-    }
-    public void setPath(String path) {
-        this.path = path;
     }
 
     // Other Methods
