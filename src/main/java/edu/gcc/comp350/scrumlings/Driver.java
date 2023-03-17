@@ -101,7 +101,7 @@ public class Driver {
             }
             // add commands here with an else if (userInput.equalsIgnoreCase([COMMAND])) {}
             else if (userInput.equalsIgnoreCase("save schedule")) {
-                saveSchedule(null);
+                saveSchedule(new Schedule());
             }
             // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             else {
