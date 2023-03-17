@@ -49,6 +49,10 @@ public class Student {
         this.schedules = schedules;
     }
 
+    public void addSchedule(Schedule s){
+        this.schedules.add(s);
+    }
+
     // Constructor
     public Student(String name, String email, String major, String advisor, int semester) {
         this.name = name;
