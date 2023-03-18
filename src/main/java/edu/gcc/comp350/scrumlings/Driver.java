@@ -48,11 +48,28 @@ public class Driver {
         this.search = search;
     }
 
+
     // Other Methods
     public static void main(String[] args) {
         // init
+        Student myStudent;
         System.out.println("Welcome to the Scrumlings Semester Scheduler!");
-        System.out.println("Enter help for a list of commands");
+
+        //if there is no user file already
+        System.out.println("Enter your name:  ");
+        String studentName = scnr.nextLine();
+        System.out.println("Enter your major:  ");
+        String studentMajor = scnr.nextLine();
+        System.out.println("Enter your email:  ");
+        String studentEmail = scnr.nextLine();
+        System.out.println("Enter your advisor:  ");
+        String studentAdvisor = scnr.nextLine();
+        System.out.println("Enter which semester your schedule is for:  ");
+        String studentSemester = scnr.nextLine();
+        myStudent = new Student(studentName, studentEmail, studentMajor, studentAdvisor, 00);
+        System.out.println("Thank you for your info! To continue type manual or automatic");
+        System.out.println("Enter help for a list of commands at anytime");
+
         // main loop
         while (true) {
             userInput = scnr.nextLine();
@@ -71,31 +88,26 @@ public class Driver {
             // add commands here with an else if (userInput.equalsIgnoreCase([COMMAND])) {}
             else if (userInput.equalsIgnoreCase("manual")){
                 System.out.println("You have selected to manually create a schedule");
-                System.out.println("Enter your name:  ");
-                String studentName = scnr.nextLine();
-                System.out.println("Enter your major:  ");
-                String studentMajor = scnr.nextLine();
-                System.out.println("Enter your email:  ");
-                String studentEmail = scnr.nextLine();
-                System.out.println("Enter your advisor:  ");
-                String studentAdvisor = scnr.nextLine();
-                System.out.println("Enter which semester your schedule is for:  ");
-                String studentSemester = scnr.nextLine();
-                Student myStudent = new Student(studentName, studentEmail, studentMajor, studentAdvisor, 00);
-
                 System.out.println("Enter a name for your schedule:  ");
                 String scheduleName = scnr.nextLine();
-                Schedule mySchedule = new Schedule(scheduleName, "placeholder");
+                Schedule mySchedule = new Schedule(scheduleName);
                 System.out.println("Your schedule " + scheduleName + " has been created!");
 
                 myStudent.addSchedule(mySchedule);
-            }
 
+                 for(Schedule s : myStudent.getSchedules()){
+                    System.out.println(s.getTitle());
+                }
+
+            }
             else if (userInput.equalsIgnoreCase("automatic")){
 
             }
             else if (userInput.equalsIgnoreCase("delete")){
-
+                System.out.println("You have selected to delete a schedule");
+                System.out.println("Enter the name of the schedule you wish to delete:  ");
+                String s = scnr.nextLine();
+                myStudent.removeSchedule(s);
             }
             // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             else {
