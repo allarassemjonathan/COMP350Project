@@ -30,7 +30,7 @@ public class Search {
     }
 
     // Other Methods
-    public void addFilter(String type, String filter) {
+    public ArrayList<Course> addFilter(String type, String filter) {
         //1. Update the filters
         List<String> newFilter = getFilters().get(type);
         newFilter.add(filter);
@@ -48,28 +48,31 @@ public class Search {
         //a. Search by title
         Scanner fileScn = new Scanner("2020-2021.xlsx");
         ArrayList<Course> updatedCourses = getResultCourses();
-        while (fileScn.hasNext()) {
-            String currCourse = fileScn.nextLine();
-            String[] courseData = currCourse.split(", ");
-            if (courseData[5].equals(filter)) { //title entry matches filtered title
-                Course newCourse = new Course();
-                newCourse.setDept(courseData[2]);
-                newCourse.setCourseNum(Integer.parseInt(courseData[3]));
-                newCourse.setSection(courseData[4].charAt(0));
-                newCourse.setTitle(courseData[5]);
-                String[] dateString = null;
-                for (int i = 0; i < 6; i++) {
-                    if (courseData[i+9] != null) {
-                        dateString[i]=courseData[i+9];
+        if (type.equals("Title")) {
+            while (fileScn.hasNext()) {
+                String currCourse = fileScn.nextLine();
+                String[] courseData = currCourse.split(", ");
+                if (courseData[5].equals(filter)) { //title entry matches filtered title
+                    Course newCourse = new Course();
+                    newCourse.setDept(courseData[2]);
+                    newCourse.setCourseNum(Integer.parseInt(courseData[3]));
+                    newCourse.setSection(courseData[4].charAt(0));
+                    newCourse.setTitle(courseData[5]);
+                    String[] dateString = null;
+                    for (int i = 0; i < 6; i++) {
+                        if (courseData[i+9] != null) {
+                            dateString[i]=courseData[i+9];
+                        }
                     }
-
+                    newCourse.setDate(dateString);
+                    updatedCourses.add(newCourse);
                 }
-                newCourse.setDate(dateString);
-
-                updatedCourses.add(newCourse);
             }
 
+
         }
+
+        return updatedCourses;
 
     }
     public void removeFilter(String type, String filter) {
