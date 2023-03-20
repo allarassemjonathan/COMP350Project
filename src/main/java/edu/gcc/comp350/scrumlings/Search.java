@@ -3,6 +3,7 @@ package edu.gcc.comp350.scrumlings;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Scanner;
 
 public class Search {
     // Member Variables
@@ -45,6 +46,30 @@ public class Search {
 
         //2. Update the course list with new filters
         //a. Search by title
+        Scanner fileScn = new Scanner("2020-2021.xlsx");
+        ArrayList<Course> updatedCourses = getResultCourses();
+        while (fileScn.hasNext()) {
+            String currCourse = fileScn.nextLine();
+            String[] courseData = currCourse.split(", ");
+            if (courseData[5].equals(filter)) { //title entry matches filtered title
+                Course newCourse = new Course();
+                newCourse.setDept(courseData[2]);
+                newCourse.setCourseNum(Integer.parseInt(courseData[3]));
+                newCourse.setSection(courseData[4].charAt(0));
+                newCourse.setTitle(courseData[5]);
+                String[] dateString = null;
+                for (int i = 0; i < 6; i++) {
+                    if (courseData[i+9] != null) {
+                        dateString[i]=courseData[i+9];
+                    }
+
+                }
+                newCourse.setDate(dateString);
+
+                updatedCourses.add(newCourse);
+            }
+
+        }
 
     }
     public void removeFilter(String type, String filter) {
