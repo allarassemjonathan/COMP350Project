@@ -13,6 +13,11 @@ class Schedule {
         courses = new ArrayList<>();
     }
 
+    // builds schedule from file
+    public Schedule(StringBuilder sb) {
+        this.title = sb.toString();
+    }
+
     public Schedule() {
         courses = new ArrayList<>();
     }
