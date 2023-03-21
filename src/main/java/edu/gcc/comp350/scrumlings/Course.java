@@ -6,13 +6,18 @@ public class Course {
     // Member variables
     private String title;
     private String professor;
-    private Date date;
+    private String[] date;
     private String dept;
     private int courseNum;
     private char section;
 
-    public Course(){
-
+    public Course(String title, String professor, String[] date){
+        this.title = title;
+        this.professor = professor;
+        this.date = date;
+    }
+    public String toString(){
+        return this.title;
     }
     // Getters and Setters
     public String getTitle() {
@@ -33,10 +38,10 @@ public class Course {
     public void setProfessor(String professor) {
         this.professor = professor;
     }
-    public Date getDate() {
-        return date;
+    public String[] getDate() {
+        return this.date;
     }
-    public void setDate(Date date) {
+    public void setDate(String[] date) {
         this.date = date;
     }
     public String getDept() {
