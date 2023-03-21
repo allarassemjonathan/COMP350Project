@@ -53,6 +53,18 @@ public class Student {
         this.schedules.add(s);
     }
 
+    public void removeSchedule(String str){
+        for(int i = 0; i < this.schedules.size(); i++){
+            Schedule s = this.schedules.get(i);
+            if(str.equals(s.getTitle())){
+                this.schedules.remove(s);
+                System.out.println("Your schedule " + str + " has been deleted");
+            }else{
+                System.out.println("Schedule " + str + " not found please try again");
+            }
+        }
+    }
+
     // Constructor
     public Student(String name, String email, String major, String advisor, int semester) {
         this.name = name;
