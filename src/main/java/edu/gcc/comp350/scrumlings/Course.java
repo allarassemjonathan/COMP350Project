@@ -6,7 +6,7 @@ public class Course {
     // Member variables
     private String title;
     private String professor;
-    private Date date;
+    private String[] date;
     private String dept;
     private int courseNum;
     private char section;
@@ -30,10 +30,10 @@ public class Course {
     public void setProfessor(String professor) {
         this.professor = professor;
     }
-    public Date getDate() {
+    public String[] getDate() {
         return date;
     }
-    public void setDate(Date date) {
+    public void setDate(String[] date) {
         this.date = date;
     }
     public String getDept() {
