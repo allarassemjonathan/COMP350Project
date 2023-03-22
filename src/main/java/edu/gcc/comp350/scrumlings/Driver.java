@@ -108,7 +108,7 @@ public class Driver {
         // init
         // main loop
         while (true) {
-            System.out.println(">");
+            System.out.print(">");
             userInput = scnr.nextLine();
             // quitting
             if (userInput.equalsIgnoreCase("quit")) {
