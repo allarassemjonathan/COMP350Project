@@ -8,7 +8,7 @@ class Schedule {
     private String title;
 
     // Constructor
-    public Schedule(String title) {
+    public Schedule(String title, String placeholder) {
         this.title = title;
 
         courses = new ArrayList<>();

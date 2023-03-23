@@ -54,8 +54,6 @@ public class Search {
                 String currCourse = fileScn.nextLine();
                 String[] courseData = currCourse.split(",");
                 if (courseData[5].equals(filter)) { //title entry matches filtered title
-                    System.out.println(courseData[9]+courseData[10]+courseData[11]+courseData[12]
-                            +courseData[13]+" "+courseData[14]+"-"+courseData[15]);
                     Course newCourse = new Course();
                     newCourse.setDept(courseData[2]);
                     newCourse.setCourseNum(Integer.parseInt(courseData[3]));
