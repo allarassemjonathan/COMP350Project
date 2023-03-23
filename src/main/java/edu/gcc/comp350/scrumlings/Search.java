@@ -1,5 +1,7 @@
 package edu.gcc.comp350.scrumlings;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,52 +29,62 @@ public class Search {
     // Constructor
     public Search() {
         this.filters = new HashMap<>();
+        resultCourses = new ArrayList<>();
     }
 
     // Other Methods
-    public ArrayList<Course> addFilter(String type, String filter) {
+    public ArrayList<Course> addFilter(String type, String filter) throws FileNotFoundException {
         //1. Update the filters
-        List<String> newFilter = getFilters().get(type);
-        newFilter.add(filter);
-        HashMap<String, List<String>> updated = getFilters();
         //adds new filter if type exists, otherwise adds new type
-        if (updated.containsKey(type)) {
-            updated.replace(type, newFilter);
+        if (filters.containsKey(type)) {
+            filters.get(type).add(filter);
         }
         else {
-            updated.put(type, newFilter);
+            List<String> newFilterLst = new ArrayList<>();
+            newFilterLst.add(filter);
+            filters.put(type, newFilterLst);
         }
-        setFilters(updated);
 
-        //2. Update the course list with new filters
-        //a. Search by title
-        Scanner fileScn = new Scanner("2020-2021.xlsx");
-        ArrayList<Course> updatedCourses = getResultCourses();
-        if (type.equals("Title")) {
+//
+//        //2. Update the course list with new filters
+//        //a. Search by title
+        Scanner fileScn = new Scanner(new File("2020-2021.csv"));
+        if (type.equals("title")) {
             while (fileScn.hasNext()) {
                 String currCourse = fileScn.nextLine();
-                String[] courseData = currCourse.split(", ");
+                String[] courseData = currCourse.split(",");
                 if (courseData[5].equals(filter)) { //title entry matches filtered title
+                    System.out.println(courseData[9]+courseData[10]+courseData[11]+courseData[12]
+                            +courseData[13]+" "+courseData[14]+"-"+courseData[15]);
                     Course newCourse = new Course();
                     newCourse.setDept(courseData[2]);
                     newCourse.setCourseNum(Integer.parseInt(courseData[3]));
                     newCourse.setSection(courseData[4].charAt(0));
                     newCourse.setTitle(courseData[5]);
-                    String[] dateString = null;
-                    for (int i = 0; i < 6; i++) {
-                        if (courseData[i+9] != null) {
-                            dateString[i]=courseData[i+9];
-                        }
-                    }
-                    newCourse.setDate(dateString);
-                    updatedCourses.add(newCourse);
+                    String[] date = {courseData[9]+courseData[10]+courseData[11]+courseData[12]
+                    +courseData[13], courseData[14], courseData[15]};
+                    newCourse.setDate(date);
+                    System.out.println(newCourse.getDept());
+                    System.out.println(newCourse.getCourseNum());
+                    System.out.println(newCourse.getSection());
+                    System.out.println(newCourse.getTitle());
+                    System.out.println(newCourse.getDate());
+                    resultCourses.add(newCourse);
                 }
+//
+//
+//
+//
             }
-
-
+//            for (Course course: resultCourses) {
+//                System.out.println(course.getDept());
+//                System.out.println(course.getCourseNum());
+//                System.out.println(course.getSection());
+//                System.out.println(course.getTitle());
+//                System.out.println(course.getDate());
+//            }
         }
-
-        return updatedCourses;
+        return resultCourses;
 
     }
     public void removeFilter(String type, String filter) {
