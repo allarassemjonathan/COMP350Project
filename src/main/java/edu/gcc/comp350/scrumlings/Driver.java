@@ -1,5 +1,6 @@
 package edu.gcc.comp350.scrumlings;
 
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class Driver {
@@ -12,7 +13,7 @@ public class Driver {
     private static String userInput = "";
     private static String help = "Write list of commands and what they do in this string," +
             "\nmanual: allows you to manually create a schedule" + "\ndelete: allows you to delete" +
-            "a schedule you have created";
+            "a schedule you have created" + "\nsearch: allows you to search for a course";
 
     // Constructor
     public Driver(Student student, Schedule schedule, Generator generator, Search search) {
@@ -50,26 +51,10 @@ public class Driver {
 
 
     // Other Methods
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
         // init
-        Student myStudent;
         System.out.println("Welcome to the Scrumlings Semester Scheduler!");
-
-        //if there is no user file already
-        System.out.println("Enter your name:  ");
-        String studentName = scnr.nextLine();
-        System.out.println("Enter your major:  ");
-        String studentMajor = scnr.nextLine();
-        System.out.println("Enter your email:  ");
-        String studentEmail = scnr.nextLine();
-        System.out.println("Enter your advisor:  ");
-        String studentAdvisor = scnr.nextLine();
-        System.out.println("Enter which semester your schedule is for:  ");
-        String studentSemester = scnr.nextLine();
-        myStudent = new Student(studentName, studentEmail, studentMajor, studentAdvisor, 00);
-        System.out.println("Thank you for your info! To continue type manual or automatic");
-        System.out.println("Enter help for a list of commands at anytime");
-
+        System.out.println("Enter help for a list of commands");
         // main loop
         while (true) {
             userInput = scnr.nextLine();
@@ -88,26 +73,58 @@ public class Driver {
             // add commands here with an else if (userInput.equalsIgnoreCase([COMMAND])) {}
             else if (userInput.equalsIgnoreCase("manual")){
                 System.out.println("You have selected to manually create a schedule");
+                System.out.println("Enter your name:  ");
+                String studentName = scnr.nextLine();
+                System.out.println("Enter your major:  ");
+                String studentMajor = scnr.nextLine();
+                System.out.println("Enter your email:  ");
+                String studentEmail = scnr.nextLine();
+                System.out.println("Enter your advisor:  ");
+                String studentAdvisor = scnr.nextLine();
+                System.out.println("Enter which semester your schedule is for:  ");
+                String studentSemester = scnr.nextLine();
+                Student myStudent = new Student(studentName, studentEmail, studentMajor, studentAdvisor, 00);
+
                 System.out.println("Enter a name for your schedule:  ");
                 String scheduleName = scnr.nextLine();
-                Schedule mySchedule = new Schedule(scheduleName);
+                Schedule mySchedule = new Schedule(scheduleName, "placeholder");
                 System.out.println("Your schedule " + scheduleName + " has been created!");
 
                 myStudent.addSchedule(mySchedule);
-
-                 for(Schedule s : myStudent.getSchedules()){
-                    System.out.println(s.getTitle());
-                }
-
             }
+
+            else if (userInput.equalsIgnoreCase("search")){
+                System.out.println("If you would like to add a filter to your search, enter title, date, or code. " +
+                        "Otherwise enter skip.");
+                String type = scnr.nextLine();
+                String filter;
+                Search search = new Search();
+                if (type.equals("skip")) {
+                    System.out.println("No filters added.");
+                }
+                else if (type.equals("title")){
+                    System.out.println("Enter a course title:");
+                    filter = scnr.nextLine();
+                    search.addFilter(type, filter);
+                }
+//                else if (type.equals("date")) {
+//                    System.out.println("Enter the days of the week followed by the start and end time of your search");
+//                    filter = scnr.nextLine();
+//                    System.out.println(type + " " + filter);
+//                }
+//                else if (type.equals("code")) {
+//                    System.out.println("Enter the course department and code of your search");
+//                }
+                else {
+                    System.out.println("Please enter a valid command");
+                }
+            }
+
             else if (userInput.equalsIgnoreCase("automatic")){
 
             }
             else if (userInput.equalsIgnoreCase("delete")){
-                System.out.println("You have selected to delete a schedule");
-                System.out.println("Enter the name of the schedule you wish to delete:  ");
-                String s = scnr.nextLine();
-                myStudent.removeSchedule(s);
+
             }
             // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             else {
