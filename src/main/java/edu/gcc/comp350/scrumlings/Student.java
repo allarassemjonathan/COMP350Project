@@ -11,6 +11,9 @@ public class Student {
     private int semester;
     private ArrayList<Schedule> schedules;
 
+    public Student(){
+        this.name = "empty";
+    }
     // Getters and Setters
     public String getName() {
         return name;
