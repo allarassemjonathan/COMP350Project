@@ -99,10 +99,10 @@ public class Driver {
                 String type = scnr.nextLine();
                 String filter;
                 Search search = new Search();
-                if (type.equals("skip")) {
+                if (type.equalsIgnoreCase("skip")) {
                     System.out.println("No filters added.");
                 }
-                else if (type.equals("title")){
+                else if (type.equalsIgnoreCase("title")){
                     System.out.println("Enter a course title:");
                     filter = scnr.nextLine();
                     search.addFilter(type, filter);

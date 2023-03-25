@@ -53,7 +53,7 @@ public class Search {
             while (fileScn.hasNext()) {
                 String currCourse = fileScn.nextLine();
                 String[] courseData = currCourse.split(",");
-                if (courseData[5].equals(filter)) { //title entry matches filtered title
+                if (courseData[5].contains(filter)) { //title entry matches filtered title
                     Course newCourse = new Course();
                     newCourse.setDept(courseData[2]);
                     newCourse.setCourseNum(Integer.parseInt(courseData[3]));
