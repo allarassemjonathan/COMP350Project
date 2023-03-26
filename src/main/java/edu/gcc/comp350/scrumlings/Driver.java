@@ -58,13 +58,16 @@ public class Driver {
     public static void main(String[] args) throws FileNotFoundException {
         ArrayList<Course> allCourses = new ArrayList<>();
         Scanner fileScn = new Scanner(new File("2020-2021.csv"));
+        fileScn.nextLine();
         while (fileScn.hasNext()) {
             String currCourse = fileScn.nextLine();
             String[] courseData = currCourse.split(",");
             Course newCourse = new Course();
             newCourse.setDept(courseData[2]);
             newCourse.setCourseNum(Integer.parseInt(courseData[3]));
-            newCourse.setSection(courseData[4].charAt(0));
+            if (courseData[4] != null && !courseData[4].isEmpty()) {
+                newCourse.setSection(courseData[4].charAt(0));
+            }
             newCourse.setTitle(courseData[5]);
             String[] date = {courseData[9] + courseData[10] + courseData[11] + courseData[12]
                     + courseData[13], courseData[14], courseData[15]};
