@@ -1,15 +1,35 @@
 package edu.gcc.comp350.scrumlings;
 
-import java.util.Date;
 
+import java.util.ArrayList;
+import java.util.Date;
 public class Course {
     // Member variables
     private String title;
     private String professor;
+
+    //string[] ex = {"M 12", "W 12", "F 12"}
     private String[] date;
     private String dept;
     private int courseNum;
     private char section;
+
+    //Constructor
+    public Course(String title, String professor, String [] date, String dept,
+                  int courseNum, char section) {
+        this.title = title;
+        this.professor = professor;
+        this.date = date;
+        this.dept = dept;
+        this.courseNum = courseNum;
+        this.section = section;
+
+    }
+
+    public Course() {
+
+    }
+
 
     // Getters and Setters
     public String getTitle() {
