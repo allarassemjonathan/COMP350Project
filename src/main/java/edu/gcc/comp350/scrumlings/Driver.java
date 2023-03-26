@@ -1,5 +1,12 @@
 package edu.gcc.comp350.scrumlings;
-
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.FileNotFoundException;
+import java.sql.PseudoColumnUsage;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -17,6 +24,9 @@ public class Driver {
             "\nmanual: allows you to manually create a schedule" + "\ndelete: allows you to delete" +
             "a schedule you have created" + "\nsearch: allows you to search for a course";
 
+    public Driver(){
+
+    }
     // Constructor
     public Driver(Student student, Schedule schedule, Generator generator, Search search) {
         this.student = student;
@@ -51,11 +61,69 @@ public class Driver {
         this.search = search;
     }
 
-
-
+    /**
+     * @return A student object created based on the answers
+     * of the student to the questions. This line is run whenever
+     * the student_info.txt file is empty.
+     */
+    public Student questionsForStudent(){
+        System.out.println("Enter your name:  ");
+        String studentName = scnr.nextLine();
+        System.out.println("Enter your major:  ");
+        String studentMajor = scnr.nextLine();
+        System.out.println("Enter your email:  ");
+        String studentEmail = scnr.nextLine();
+        System.out.println("Enter your advisor:  ");
+        String studentAdvisor = scnr.nextLine();
+        System.out.println("Enter which semester your schedule is for:  ");
+        String studentSemester = scnr.nextLine();
+        student = new Student(studentName, studentEmail, studentMajor, studentAdvisor, 00);
+        return student;
+    }
+    public Student ReadFile(){
+        File file = new File("student_info.txt");
+        if (file.exists() && file.isFile()) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+                String line;
+                StringBuilder sb = new StringBuilder();
+                while ((line = reader.readLine()) != null) {
+                    sb.append(line);
+                    sb.append(System.lineSeparator());
+                }
+                String fileContent = sb.toString().trim();
+                if (!fileContent.isEmpty()) {
+                    Scanner read = new Scanner(fileContent);
+                    student = new Student(read.nextLine(), read.nextLine(), read.nextLine(),read.nextLine(), read.nextInt());
+                    return student;
+                } else {
+                    System.out.println("New user? Here are a couple of questions for you!\n");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("File not found.");
+        }
+        student = new Student();
+        return student;
+    }
 
     // Other Methods
     public static void main(String[] args) throws FileNotFoundException {
+
+        // root/init
+        System.out.println("Scrumlings Semester Scheduler!");
+        // if you have already used the app, it remembers you otherwise it ask for info
+        Driver driver = new Driver();
+        Student student = driver.ReadFile();
+        if(student.getName().equals("empty")){
+            student = driver.questionsForStudent();
+        }
+        System.out.println("Welcome" + " " + student.getName());
+        System.out.printf("Here are the commands available at this point:\n1. help: get a list of commands" +
+                "\n2. automatic : get the program to automatically set up the schedule for you" +
+                "\n3. manual : set up the schedule yourself by searching for classes\n", "");
+
         ArrayList<Course> allCourses = new ArrayList<>();
         Scanner fileScn = new Scanner(new File("2020-2021.csv"));
         fileScn.nextLine();
@@ -75,11 +143,8 @@ public class Driver {
             allCourses.add(newCourse);
         }
 
-        // init
-        System.out.println("Welcome to the Scrumlings Semester Scheduler!");
-        System.out.println("Enter help for a list of commands");
         // main loop
-        while (true) {
+        while(true) {
             userInput = scnr.nextLine();
             // quitting
             if (userInput.equalsIgnoreCase("quit")) {
@@ -93,27 +158,16 @@ public class Driver {
             else if (userInput.equalsIgnoreCase("help")) {
                 System.out.println(help);
             }
+
             // add commands here with an else if (userInput.equalsIgnoreCase([COMMAND])) {}
             else if (userInput.equalsIgnoreCase("manual")){
-                System.out.println("You have selected to manually create a schedule");
-                System.out.println("Enter your name:  ");
-                String studentName = scnr.nextLine();
-                System.out.println("Enter your major:  ");
-                String studentMajor = scnr.nextLine();
-                System.out.println("Enter your email:  ");
-                String studentEmail = scnr.nextLine();
-                System.out.println("Enter your advisor:  ");
-                String studentAdvisor = scnr.nextLine();
-                System.out.println("Enter which semester your schedule is for:  ");
-                String studentSemester = scnr.nextLine();
-                Student myStudent = new Student(studentName, studentEmail, studentMajor, studentAdvisor, 00);
-
+                System.out.println(student.getName() + " you have selected to manually create a schedule");
                 System.out.println("Enter a name for your schedule:  ");
                 String scheduleName = scnr.nextLine();
                 Schedule mySchedule = new Schedule(scheduleName, "placeholder");
                 System.out.println("Your schedule " + scheduleName + " has been created!");
-
-                myStudent.addSchedule(mySchedule);
+                student.addSchedule(mySchedule);
+                System.out.println("schedule added");
             }
 
             else if (userInput.equalsIgnoreCase("search")){
@@ -128,7 +182,7 @@ public class Driver {
                 else if (type.equalsIgnoreCase("title")){
                     System.out.println("Enter a course title:");
                     filter = scnr.nextLine();
-                    search.addFilter(type, filter, allCourses);
+                    //search.addFilter(type, filter, allCourses);
                 }
 //                else if (type.equals("date")) {
 //                    System.out.println("Enter the days of the week followed by the start and end time of your search");
