@@ -26,6 +26,9 @@ public class Course {
 
     }
 
+    public Course() {
+
+    }
 
 
     // Getters and Setters

@@ -1,7 +1,10 @@
 package edu.gcc.comp350.scrumlings;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.sql.PseudoColumnUsage;
+import java.util.ArrayList;
+
 import java.util.Scanner;
 
 public class Driver {
@@ -51,18 +54,25 @@ public class Driver {
     }
 
     // Other Methods
-    public static void main(String[] args) throws Exception {
-        //test
-        String[] timeOne = {"M 12"};
-        String[] timeTwo = {"M 12"};
-        String[] timeThree = {"W 12", "W 13","F 34"};
-        Course testOne = new Course("Comp250", "wolfe", timeOne,"CS", 1, 'A');
-        Course testTwo = new Course("Comp350", "wolfe", timeTwo,"CS", 1, 'A');
-        Schedule s = new Schedule("Ava","");
-        s.getCourses().add(testTwo);
-        s.addCourse(testOne);
-
-
+    public static void main(String[] args) throws FileNotFoundException {
+        ArrayList<Course> allCourses = new ArrayList<>();
+        Scanner fileScn = new Scanner(new File("2020-2021.csv"));
+        fileScn.nextLine();
+        while (fileScn.hasNext()) {
+            String currCourse = fileScn.nextLine();
+            String[] courseData = currCourse.split(",");
+            Course newCourse = new Course();
+            newCourse.setDept(courseData[2]);
+            newCourse.setCourseNum(Integer.parseInt(courseData[3]));
+            if (courseData[4] != null && !courseData[4].isEmpty()) {
+                newCourse.setSection(courseData[4].charAt(0));
+            }
+            newCourse.setTitle(courseData[5]);
+            String[] date = {courseData[9] + courseData[10] + courseData[11] + courseData[12]
+                    + courseData[13], courseData[14], courseData[15]};
+            newCourse.setDate(date);
+            allCourses.add(newCourse);
+        }
 
         // init
         System.out.println("Welcome to the Scrumlings Semester Scheduler!");
@@ -111,13 +121,13 @@ public class Driver {
                 String type = scnr.nextLine();
                 String filter;
                 Search search = new Search();
-                if (type.equals("skip")) {
+                if (type.equalsIgnoreCase("skip")) {
                     System.out.println("No filters added.");
                 }
-                else if (type.equals("title")){
+                else if (type.equalsIgnoreCase("title")){
                     System.out.println("Enter a course title:");
                     filter = scnr.nextLine();
-                    search.addFilter(type, filter);
+                    //search.addFilter(type, filter, allCourses);
                 }
 //                else if (type.equals("date")) {
 //                    System.out.println("Enter the days of the week followed by the start and end time of your search");
