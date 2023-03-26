@@ -22,7 +22,8 @@ public class Driver {
     private static String userInput = "";
     private static String help = "Write list of commands and what they do in this string," +
             "\nmanual: allows you to manually create a schedule" + "\ndelete: allows you to delete" +
-            "a schedule you have created" + "\nsearch: allows you to search for a course";
+            "a schedule you have created" + "\nsearch: allows you to search for a course"
+            + "\ndisplay: allows you to display a schedule";
 
     public Driver(){
 
@@ -201,7 +202,21 @@ public class Driver {
 
             }
             else if (userInput.equalsIgnoreCase("delete")){
+                System.out.println("Enter the name of the schedule to be deleted");
+               String scheduleName = scnr.nextLine();
+                student.removeSchedule(scheduleName);
+                System.out.println("Your schedule has been removed");
+            }
+            else if (userInput.equalsIgnoreCase("display")){
+                System.out.println("Enter the name of the schedule you wish to display");
+                String scheduleName = scnr.nextLine();
 
+                for(Schedule s : student.getSchedules()){
+                    if(s.getTitle().equals(scheduleName)){
+                        s.DisplaySchedule();
+                    }
+
+                }
             }
             // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             else {

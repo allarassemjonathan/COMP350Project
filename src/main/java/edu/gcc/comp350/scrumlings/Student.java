@@ -68,6 +68,7 @@ public class Student {
         }
     }
 
+
     // Constructor
     public Student(String name, String email, String major, String advisor, int semester) {
         this.name = name;
