@@ -7,10 +7,18 @@ class Schedule {
     private ArrayList<Course> courses;
     private String title;
 
-    // Constructor
+    // Constructors
     public Schedule(String title) {
         this.title = title;
+        courses = new ArrayList<>();
+    }
 
+    // builds schedule from file
+    public Schedule(StringBuilder sb) {
+        this.title = sb.toString();
+    }
+
+    public Schedule() {
         courses = new ArrayList<>();
     }
 
