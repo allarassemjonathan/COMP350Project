@@ -34,7 +34,7 @@ class Schedule {
 
     public void addCourse(Course c) throws Exception {
 
-        //compare course to current schedule's list of courses
+        //compare course to current schedule's list of classes
         for (int i = 0; i < this.getCourses().size(); i++) {
 
             //{"M 12", "W 12", "F 12"}
