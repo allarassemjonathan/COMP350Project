@@ -1,5 +1,6 @@
 package edu.gcc.comp350.scrumlings;
 
+<<<<<<< HEAD
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -7,6 +8,11 @@ import java.io.IOException;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
+=======
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+>>>>>>> 5c6d271f395c050402d6a447473922dede2a19f6
 import java.util.Scanner;
 
 public class Driver {
@@ -105,8 +111,11 @@ public class Driver {
         return student;
     }
 
+
+
     // Other Methods
     public static void main(String[] args) throws FileNotFoundException {
+
         // root/init
         System.out.println("Scrumlings Semester Scheduler!");
         // if you have already used the app, it remembers you otherwise it ask for info
@@ -119,6 +128,23 @@ public class Driver {
         System.out.printf("Here are the commands available at this point:\n1. help: get a list of commands" +
                 "\n2. automatic : get the program to automatically set up the schedule for you" +
                 "\n3. manual : set up the schedule yourself by searching for classes\n", "");
+
+        ArrayList<Course> allCourses = new ArrayList<>();
+        Scanner fileScn = new Scanner(new File("2020-2021.csv"));
+        while (fileScn.hasNext()) {
+            String currCourse = fileScn.nextLine();
+            String[] courseData = currCourse.split(",");
+            Course newCourse = new Course();
+            newCourse.setDept(courseData[2]);
+            newCourse.setCourseNum(Integer.parseInt(courseData[3]));
+            newCourse.setSection(courseData[4].charAt(0));
+            newCourse.setTitle(courseData[5]);
+            String[] date = {courseData[9] + courseData[10] + courseData[11] + courseData[12]
+                    + courseData[13], courseData[14], courseData[15]};
+            newCourse.setDate(date);
+            allCourses.add(newCourse);
+        }
+
         // main loop
         while (true) {
             userInput = scnr.nextLine();
@@ -152,13 +178,13 @@ public class Driver {
                 String type = scnr.nextLine();
                 String filter;
                 Search search = new Search();
-                if (type.equals("skip")) {
+                if (type.equalsIgnoreCase("skip")) {
                     System.out.println("No filters added.");
                 }
-                else if (type.equals("title")){
+                else if (type.equalsIgnoreCase("title")){
                     System.out.println("Enter a course title:");
                     filter = scnr.nextLine();
-                    search.addFilter(type, filter);
+                    search.addFilter(type, filter, allCourses);
                 }
 //                else if (type.equals("date")) {
 //                    System.out.println("Enter the days of the week followed by the start and end time of your search");
