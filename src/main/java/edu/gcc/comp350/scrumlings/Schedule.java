@@ -11,6 +11,10 @@ class Schedule {
     private String title;
 
     // Constructor
+    public Schedule() {
+        courses = new ArrayList<>();
+    }
+
     public Schedule(String title, String placeholder) {
         this.title = title;
 
@@ -20,6 +24,10 @@ class Schedule {
     // Getters and Setters
     public ArrayList<Course> getCourses() {
         return courses;
+    }
+
+    public Schedule(StringBuilder sb) {
+        this.title = sb.toString();
     }
 
     public void setCourses(ArrayList<Course> courses) {
