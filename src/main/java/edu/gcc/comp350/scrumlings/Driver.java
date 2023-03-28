@@ -61,6 +61,12 @@ public class Driver {
     public void setSearch(Search search) {
         this.search = search;
     }
+    public void toString(Course c) {
+        System.out.println(c.getDept());
+        System.out.print(c.getCourseNum());
+        System.out.print(c.getSection());
+        System.out.print(c.getTitle() + c.getDate() + c.getProfessor());
+    }
 
     /**
      * @return A student object created based on the answers
@@ -183,7 +189,7 @@ public class Driver {
                 else if (type.equalsIgnoreCase("title")){
                     System.out.println("Enter a course title:");
                     filter = scnr.nextLine();
-                    //search.addFilter(type, filter, allCourses);
+                    search.addFilter(type, filter);
                 }
 //                else if (type.equals("date")) {
 //                    System.out.println("Enter the days of the week followed by the start and end time of your search");
@@ -195,6 +201,10 @@ public class Driver {
 //                }
                 else {
                     System.out.println("Please enter a valid command");
+                }
+                search.setResultCourses(search.searchCourses(allCourses));
+                for (Course c: search.getResultCourses()) {
+                    System.out.println(c.toString());
                 }
             }
 
