@@ -48,24 +48,52 @@ public class Search {
 
     }
     public void removeFilter(String type, String filter) {
-
+        if (filters.containsKey(type)) {
+            if (filters.get(type).contains(filter)) {
+                filters.get(type).remove(filter);
+            }
+        }
     }
+
     public ArrayList<Course> searchCourses(ArrayList<Course> allCourses) {
+        ArrayList<Course> titles = new ArrayList<>();
+        ArrayList<Course> codes = new ArrayList<>();
+        ArrayList<Course> dates = new ArrayList<>();
+
         for (Course c: allCourses) {
             if (this.filters.containsKey("title")) {
                 for (String title : filters.get("title")) {
                     if (c.getTitle().contains(title) && !this.resultCourses.contains(c)) {
-                        resultCourses.add(c);
+                        titles.add(c);
                     }
                 }
             }
+            else {
+                titles = allCourses; //default: no filtering
+            }
+
             if (this.filters.containsKey("code")) {
                 for (String code : filters.get("code")) {
                     if ((c.getDept() + " " + c.getCourseNum()).contains(code) && !this.resultCourses.contains(c)) {
-                        resultCourses.add(c);
+                         codes.add(c);
                     }
                 }
             }
+            else {
+                codes = allCourses; //default: no filtering
+            }
+
+            if (this.filters.containsKey("date")) {
+
+            }
+            else {
+                dates = allCourses; //default: no filtering
+            }
+
+            if (titles.contains(c) && codes.contains(c)) {
+                resultCourses.add(c);
+            }
+
         }
         return resultCourses;
     }

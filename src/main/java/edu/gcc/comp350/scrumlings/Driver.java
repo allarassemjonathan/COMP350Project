@@ -172,46 +172,55 @@ public class Driver {
                 System.out.println("Enter a name for your schedule:  ");
                 String scheduleName = scnr.nextLine();
                 Schedule mySchedule = new Schedule(scheduleName, "placeholder");
-                System.out.println("Your schedule " + scheduleName + " has been created!");
+                System.out.println("Your schedule " + scheduleName + " has been created! To find classes, type search.");
                 student.addSchedule(mySchedule);
                 System.out.println("schedule added");
             }
 
             else if (userInput.equalsIgnoreCase("search")){
-                System.out.println("If you would like to add a filter to your search, enter title, date, or code. " +
-                        "Otherwise enter skip.");
-                String type = scnr.nextLine();
-                String filter;
+                boolean searching = true;
                 Search search = new Search();
-                if (type.equalsIgnoreCase("skip")) {
-                    System.out.println("No filters added.");
-                }
-                else if (type.equalsIgnoreCase("title")){
-                    System.out.println("Enter a course title:");
-                    filter = scnr.nextLine().toUpperCase();
-                    search.addFilter(type, filter);
-                }
+                while (searching) {
+                    System.out.println("If you would like to add a filter to your search, enter title, date, or code. " +
+                            "Otherwise enter skip.");
+                    String type = scnr.nextLine();
+                    String filter;
+                    if (type.equalsIgnoreCase("skip")) {
+                        System.out.println("No filters added.");
+                    }
+                    else if (type.equalsIgnoreCase("title")){
+                        System.out.println("Enter a course title:");
+                        filter = scnr.nextLine().toUpperCase();
+                        search.addFilter(type, filter);
+                    }
 //                else if (type.equals("date")) {
 //                    System.out.println("Enter the days of the week followed by the start and end time of your search");
 //                    filter = scnr.nextLine();
 //                    System.out.println(type + " " + filter);
 //                }
-                else if (type.equals("code")) {
-                    System.out.println("Enter the course department and code of your search");
-                    filter = scnr.nextLine().toUpperCase();
-                    search.addFilter(type, filter);
+                    else if (type.equals("code")) {
+                        System.out.println("Enter the course department and code of your search");
+                        filter = scnr.nextLine().toUpperCase();
+                        search.addFilter(type, filter);
+                    }
+                    else {
+                        System.out.println("Please enter a valid search filter.");
+                    }
+                    search.setResultCourses(search.searchCourses(allCourses));
+                    int result = 0;
+                    for (Course c: search.getResultCourses()) {
+                        System.out.println(result + ". " + c.toString());
+                        result++;
+                        //0. dept + number + section + title + date + professor
+                        //1. etc
+                    }
+                    System.out.println(search.getFilters());
+                    System.out.println("Would you like to add another filter? Y/N");
+                    if (scnr.nextLine().equalsIgnoreCase("n")) {
+                        break;
+                    }
                 }
-                else {
-                    System.out.println("Please enter a valid command");
-                }
-                search.setResultCourses(search.searchCourses(allCourses));
-                int result = 0;
-                for (Course c: search.getResultCourses()) {
-                    System.out.println(result + ". " + c.toString());
-                    result++;
-                    //0. dept + number + section + title + date + professor
-                    //1. etc
-                }
+
             }
 
             else if (userInput.equalsIgnoreCase("automatic")){
