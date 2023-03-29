@@ -10,10 +10,11 @@ class Schedule {
     private ArrayList<Course> courses;
     private String title;
 
+    boolean saved = false;
+
     // Constructor
     public Schedule(String title, String placeholder) {
         this.title = title;
-
         courses = new ArrayList<>();
     }
 
@@ -106,12 +107,16 @@ class Schedule {
 
                 }
             }
+        saved = false;
         }
+
 
       // ["M 12"]
       // ["M 12"]
       // returning false should be true
-
+public boolean getSavedStatus(){
+        return saved;
+}
     public boolean is_conflict(String [] time_1, String [] time_2){
        // System.out.println(time_1.length);
        // System.out.println(time_2.length);
@@ -131,6 +136,7 @@ class Schedule {
     }
 
     public void removeCourse(Course course) {
+        saved = false;
         courses.remove(course);
     }
     public void removeCourse(int index) {

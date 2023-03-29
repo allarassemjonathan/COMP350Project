@@ -155,6 +155,20 @@ public class Driver {
             userInput = scnr.nextLine();
             // quitting
             if (userInput.equalsIgnoreCase("quit")) {
+                if (!driver.schedule.getSavedStatus()){
+                    Scanner sc = new Scanner(System.in);
+                    if(sc.next().equals("yes")){
+                        //TODO save the scedule
+                    }
+                    else if(sc.next().equals("no")){
+                        //TODO do not save
+                    }
+                    else{
+                        System.out.println("Enter a correct answer");
+                    }
+                    System.out.println("Do you want to save your schedule first");
+
+                }
                 System.out.println("Are you sure you want to quit?");
                 userInput = scnr.nextLine();
                 if(userInput.equalsIgnoreCase("yes")) {
