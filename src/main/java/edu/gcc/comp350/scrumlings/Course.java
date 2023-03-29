@@ -1,8 +1,6 @@
 package edu.gcc.comp350.scrumlings;
 
 
-import java.util.ArrayList;
-import java.util.Date;
 public class Course {
     // Member variables
     private String title;
@@ -28,6 +26,12 @@ public class Course {
 
     public Course() {
 
+    }
+
+    @Override
+    public String toString() {
+        String dateString = date[0] + " " + date[1] + " " + date[2] + " " + date[3] + " " + date[4];
+        return dept + " " + courseNum + " " + section + " " + title + " " + dateString + " " + professor;
     }
 
 

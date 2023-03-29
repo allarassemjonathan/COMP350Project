@@ -61,12 +61,6 @@ public class Driver {
     public void setSearch(Search search) {
         this.search = search;
     }
-    public void toString(Course c) {
-        System.out.println(c.getDept());
-        System.out.print(c.getCourseNum());
-        System.out.print(c.getSection());
-        System.out.print(c.getTitle() + c.getDate() + c.getProfessor());
-    }
 
     /**
      * @return A student object created based on the answers
@@ -144,11 +138,17 @@ public class Driver {
                 newCourse.setSection(courseData[4].charAt(0));
             }
             newCourse.setTitle(courseData[5]);
-            String[] date = {courseData[9] + courseData[10] + courseData[11] + courseData[12]
-                    + courseData[13], courseData[14], courseData[15]};
+            String[] date = new String[5];
+            for (int i = 0; i < 5; i++) {
+                if (!(courseData[i+9] == null)) {
+                    date[i] = courseData[i+9] + " " + courseData[14];
+                }
+            }
             newCourse.setDate(date);
+            newCourse.setProfessor(courseData[17] + " " + courseData[16]);
             allCourses.add(newCourse);
         }
+
 
         // main loop
         while(true) {
@@ -188,7 +188,7 @@ public class Driver {
                 }
                 else if (type.equalsIgnoreCase("title")){
                     System.out.println("Enter a course title:");
-                    filter = scnr.nextLine();
+                    filter = scnr.nextLine().toUpperCase();
                     search.addFilter(type, filter);
                 }
 //                else if (type.equals("date")) {
@@ -203,8 +203,12 @@ public class Driver {
                     System.out.println("Please enter a valid command");
                 }
                 search.setResultCourses(search.searchCourses(allCourses));
+                int result = 0;
                 for (Course c: search.getResultCourses()) {
-                    System.out.println(c.toString());
+                    System.out.println(result + ". " + c.toString());
+                    result++;
+                    //0. dept + number + section + title + date + professor
+                    //1. etc
                 }
             }
 
