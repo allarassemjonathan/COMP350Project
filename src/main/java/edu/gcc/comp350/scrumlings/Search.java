@@ -63,7 +63,7 @@ public class Search {
         for (Course c: allCourses) {
             if (this.filters.containsKey("title")) {
                 for (String title : filters.get("title")) {
-                    if (c.getTitle().contains(title) && !this.resultCourses.contains(c)) {
+                    if (c.getTitle().contains(title) && !titles.contains(c)) {
                         titles.add(c);
                     }
                 }
@@ -74,8 +74,8 @@ public class Search {
 
             if (this.filters.containsKey("code")) {
                 for (String code : filters.get("code")) {
-                    if ((c.getDept() + " " + c.getCourseNum()).contains(code) && !this.resultCourses.contains(c)) {
-                         codes.add(c);
+                    if (((c.getDept() + " " + c.getCourseNum()).contains(code)) && !codes.contains(c)) {
+                         dates.add(c);
                     }
                 }
             }
@@ -84,13 +84,17 @@ public class Search {
             }
 
             if (this.filters.containsKey("date")) {
-
+                for (String date : filters.get("date")) {
+                    if (((c.getDate()[1].contains(date) || c.getDate()[2].contains(date))) && !dates.contains(c)) {
+                        dates.add(c);
+                    }
+                }
             }
             else {
                 dates = allCourses; //default: no filtering
             }
 
-            if (titles.contains(c) && codes.contains(c)) {
+            if (titles.contains(c) && codes.contains(c) && dates.contains(c)) {
                 resultCourses.add(c);
             }
 
