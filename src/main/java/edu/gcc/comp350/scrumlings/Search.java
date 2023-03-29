@@ -61,7 +61,7 @@ public class Search {
             }
             if (this.filters.containsKey("code")) {
                 for (String code : filters.get("code")) {
-                    if (code.contains(c.getDept()) && !this.resultCourses.contains(c)) {
+                    if ((c.getDept() + " " + c.getCourseNum()).contains(code) && !this.resultCourses.contains(c)) {
                         resultCourses.add(c);
                     }
                 }

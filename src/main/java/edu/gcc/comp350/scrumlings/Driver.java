@@ -196,9 +196,11 @@ public class Driver {
 //                    filter = scnr.nextLine();
 //                    System.out.println(type + " " + filter);
 //                }
-//                else if (type.equals("code")) {
-//                    System.out.println("Enter the course department and code of your search");
-//                }
+                else if (type.equals("code")) {
+                    System.out.println("Enter the course department and code of your search");
+                    filter = scnr.nextLine().toUpperCase();
+                    search.addFilter(type, filter);
+                }
                 else {
                     System.out.println("Please enter a valid command");
                 }
