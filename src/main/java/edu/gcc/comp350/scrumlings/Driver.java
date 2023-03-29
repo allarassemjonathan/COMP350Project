@@ -1,12 +1,10 @@
 package edu.gcc.comp350.scrumlings;
 import java.io.*;
-import java.sql.PseudoColumnUsage;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.io.FileInputStream;
+import java.io.IOException;
 
 public class Driver {
     // Member Variables
@@ -14,12 +12,15 @@ public class Driver {
     private Schedule schedule;
     private Generator generator;
     private Search search;
-    private static ArrayList<Course> allCourses;
+    private final static ArrayList<Course> allCourses = init_courses();
     private static Scanner scnr = new Scanner(System.in);
     private static String userInput = "";
     private static String help = "Write list of commands and what they do in this string," +
-            "\nmanual: allows you to manually create a schedule" + "\ndelete: allows you to delete" +
-            "a schedule you have created" + "\nsearch: allows you to search for a course";
+            "\nmanual: allows you to manually create a schedule" +
+            "\ndelete: allows you to delete a schedule you have created" +
+            "\nsearch: allows you to search for a course" +
+            "\nsave schedule: saves the schedule you are currently working on to your computer" +
+            "\nimport schedule: allows you to pull up a schedule already on your computer.";
 
     public Driver(){
 
@@ -45,9 +46,7 @@ public class Driver {
     public void setSchedule(Schedule schedule) {
         this.schedule = schedule;
     }
-    public Generator getGenerator() {
-        return generator;
-    }
+    public Generator getGenerator() { return generator; }
     public void setGenerator(Generator generator) {
         this.generator = generator;
     }
@@ -58,6 +57,109 @@ public class Driver {
         this.search = search;
     }
 
+
+    private static ArrayList<Course> init_courses() {
+        ArrayList<Course> ret = new ArrayList<>();
+        HashMap<String, ArrayList<String>> courses = new HashMap<>();
+        try {
+            File f = new File("./data/2020-2021.csv");
+            Scanner fileScan = new Scanner(f);
+            fileScan.nextLine();
+
+            // keeps track of which index information after the title begins at
+            int infoIndex;
+            while(fileScan.hasNext()) {
+                String[] info = fileScan.nextLine().split(",");
+                /* Keeps track of all information related to the course besides its name
+                0. semester: boolean (spring or fall)
+                1. credits: int
+                2. capacity: int
+                3. time: String in the form "M: 10:00:00 AM - 10:50:00 AM, W: ..."
+                4. professor: String in the form [FIRST NAME] [LAST NAME]
+                 */
+                ArrayList<String> courseInfo = new ArrayList<>();
+
+                // name = [DEPT]|[CODE]|[SECTION]|[TITLE]
+                String name = info[2] + "|" + info[3] + "|" + info[4];
+
+                // parses title for courses with commas in the name (i.e "SCIENCE, FAITH, AND TECHNOLOGY")
+                if(!info[5].contains("\"")) {
+                    name += "|" + info[5];
+                    infoIndex = 6;
+                }
+                else {
+                    name += "|" + info[5].substring(1) + ",";
+                    int i = 6;
+                    while(true) {
+                        if(info[i].contains("\"")) {
+                            name += info[i].substring(0,info[i].length() - 1);
+                            break;
+                        } else {
+                            name += info[i] + ",";
+                        }
+                        i++;
+                    }
+                    infoIndex = i + 1;
+                }
+                courseInfo.add(info[1]);
+                courseInfo.add(info[infoIndex]);
+                courseInfo.add(info[infoIndex + 1]);
+                String time = "";
+                for (int i = infoIndex + 3; i < infoIndex + 8; i++) {
+                    time += info[i] + ((info[i].length() > 0) ? ": " + info[infoIndex + 8] + " - " + info[infoIndex + 9] + "," : "");
+                }
+                courseInfo.add((time.length() == 0) ? "TBD" : time.trim());
+                courseInfo.add(info[infoIndex + 11] + " " + info[infoIndex + 10]);
+
+                // merge courses that meet at separate times
+                if(courses.containsKey(name)) {
+                    String[] mergedInfo = {
+                            courseInfo.get(0),
+                            courseInfo.get(1),
+                            courseInfo.get(2),
+                            "", // placeholder for later
+                            courseInfo.get(4)
+                    };
+                    if(courses.get(name).get(3).equals("TBD") && courseInfo.get(3).equals("TBD")) {
+                        mergedInfo[3] = "TBD";
+                    } else if (courses.get(name).get(3).equals("TBD")) {
+                        mergedInfo[3] = courseInfo.get(3);
+                    } else if (courseInfo.get(3).equals("TBD")) {
+                        mergedInfo[3] = courses.get(name).get(3);
+                    } else {
+                        mergedInfo[3] = courses.get(name).get(3) + "," + courseInfo.get(3);
+                    }
+                    ArrayList<String> merge = new ArrayList<>();
+                    for(String s : mergedInfo) { merge.add(s); }
+                    courses.put(name, merge);
+                }
+
+                // add course to hashmap
+                else {
+                    courses.put(name, courseInfo);
+                }
+            }
+            for (Map.Entry<String, ArrayList<String>> entry : courses.entrySet()) {
+                String[] name = entry.getKey().split("\\|");
+                ret.add(
+                        new Course(
+                                name[0],
+                                Integer.parseInt(name[1]),
+                                (name[2].length() == 0) ? '\0' : name[2].charAt(0),
+                                name[3],
+                                (entry.getValue().get(0) == "10"),
+                                Integer.parseInt(entry.getValue().get(1)),
+                                Integer.parseInt(entry.getValue().get(2)),
+                                entry.getValue().get(3).split(","), // TODO implement
+                                entry.getValue().get(4)
+                        )
+                );
+            }
+            return ret;
+        } catch (FileNotFoundException e) {
+            return null;
+        }
+    }
     private void saveSchedule() {
         if (schedule.getTitle() == null) {
             System.out.print("It looks like you don't have a title for this schedule yet, our" +
@@ -195,6 +297,9 @@ public class Driver {
 
     // Other Methods
     public static void main(String[] args) throws FileNotFoundException {
+        for(Course c : allCourses) {
+            System.out.println(c);
+        }
         // root/init
         System.out.println("Scrumlings Semester Scheduler!");
         // if you have already used the app, it remembers you otherwise it ask for info
@@ -208,24 +313,6 @@ public class Driver {
                 "\n2. automatic : get the program to automatically set up the schedule for you" +
                 "\n3. manual : set up the schedule yourself by searching for classes\n", "");
 
-        ArrayList<Course> allCourses = new ArrayList<>();
-        Scanner fileScn = new Scanner(new File("2020-2021.csv"));
-        fileScn.nextLine();
-        while (fileScn.hasNext()) {
-            String currCourse = fileScn.nextLine();
-            String[] courseData = currCourse.split(",");
-            Course newCourse = new Course();
-            newCourse.setDept(courseData[2]);
-            newCourse.setCourseNum(Integer.parseInt(courseData[3]));
-            if (courseData[4] != null && !courseData[4].isEmpty()) {
-                newCourse.setSection(courseData[4].charAt(0));
-            }
-            newCourse.setTitle(courseData[5]);
-            String[] date = {courseData[9] + courseData[10] + courseData[11] + courseData[12]
-                    + courseData[13], courseData[14], courseData[15]};
-            newCourse.setDate(date);
-            allCourses.add(newCourse);
-        }
 
         // main loop
         while(true) {
