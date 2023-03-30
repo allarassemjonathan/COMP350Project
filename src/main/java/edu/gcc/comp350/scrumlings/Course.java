@@ -7,10 +7,12 @@ public class Course {
     private String professor;
 
     //string[] ex = {"M 12", "W 12", "F 12"}
+
     private String[] date;
     private String dept;
     private int courseNum;
     private char section;
+
 
     //Constructor
     public Course(String title, String professor, String [] date, String dept,
@@ -33,7 +35,6 @@ public class Course {
         String dateString = date[0] + " " + date[1] + " " + date[2] + " " + date[3] + " " + date[4];
         return dept + " " + courseNum + " " + section + " " + title + " " + dateString + " " + professor;
     }
-
 
     // Getters and Setters
     public String getTitle() {

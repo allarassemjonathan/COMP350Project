@@ -1,9 +1,5 @@
 package edu.gcc.comp350.scrumlings;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.sql.PseudoColumnUsage;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,6 +7,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.io.File;
 
 public class Driver {
     // Member Variables
@@ -20,11 +17,17 @@ public class Driver {
     private Search search;
     private static Scanner scnr = new Scanner(System.in);
     private static String userInput = "";
-    private static String help = "Write list of commands and what they do in this string," +
+    private static String help = "List of commands:" +
             "\nmanual: allows you to manually create a schedule" + "\ndelete: allows you to delete" +
             "a schedule you have created" + "\nsearch: allows you to search for a course"
             + "\ndisplay: allows you to display a schedule";
 
+    private String[] majors = {
+            "Mathematics", "Computer Science", "Electrical Engineering", "Mechanical Engineering",
+            "Chemistry", "Biology", "Physics", "Political Science", "Data Science", "Philosophy",
+            "Conservation Biology", "Exercise Science", "Computer Engineering", "Communication and Art",
+            "Design and Innovation"
+    };
     public Driver(){
 
     }
@@ -62,6 +65,10 @@ public class Driver {
         this.search = search;
     }
 
+    public String[] getMajors(){
+        return this.majors;
+    }
+
     /**
      * @return A student object created based on the answers
      * of the student to the questions. This line is run whenever
@@ -70,10 +77,39 @@ public class Driver {
     public Student questionsForStudent(){
         System.out.println("Enter your name:  ");
         String studentName = scnr.nextLine();
-        System.out.println("Enter your major:  ");
-        String studentMajor = scnr.nextLine();
-        System.out.println("Enter your email:  ");
-        String studentEmail = scnr.nextLine();
+        String studentMajor = null;
+        boolean not_in = true;
+        while(not_in){
+            System.out.println("Enter your major:  ");
+            studentMajor = scnr.nextLine();
+            for(String major : this.majors){
+                if (major.equalsIgnoreCase(studentMajor)){
+                    not_in = false;
+                    break;
+                }
+            }
+        }
+
+        String studentEmail = null;
+        boolean not_email = true;
+        boolean not_gcc = true;
+        while(not_email || not_gcc){
+            System.out.println("Enter your GCC email:  ");
+            studentEmail = scnr.nextLine();
+            for (int i  = 0; i < studentEmail.length(); i++){
+                if (studentEmail.charAt(i) == '@'){
+                    not_email = false;
+                }
+            }
+            if (!not_email){
+                String [] check = studentEmail.split("@");
+                String extension = check[1];
+                if(extension.equals("gcc.edu")){
+                    not_gcc = false;
+                }
+            }
+        }
+
         System.out.println("Enter your advisor:  ");
         String studentAdvisor = scnr.nextLine();
         System.out.println("Enter which semester your schedule is for:  ");
@@ -94,7 +130,13 @@ public class Driver {
                 String fileContent = sb.toString().trim();
                 if (!fileContent.isEmpty()) {
                     Scanner read = new Scanner(fileContent);
-                    student = new Student(read.nextLine(), read.nextLine(), read.nextLine(),read.nextLine(), read.nextInt());
+                    String name = read.nextLine();
+                    String major = read.nextLine();
+                    String email = read.nextLine();
+                    int semester = read.nextInt();
+                    read.next();
+                    String advisor = read.nextLine();
+                    student = new Student(name, major, email,advisor, semester);
                     return student;
                 } else {
                     System.out.println("New user? Here are a couple of questions for you!\n");
@@ -109,6 +151,27 @@ public class Driver {
         return student;
     }
 
+    public void WriteFile(){
+        String filename = "student_info.txt";
+        String content = this.student.getName()
+                + "\n" + this.student.getMajor()
+                + "\n" + this.student.getEmail()
+                + "\n" + this.student.getSemester()
+                + "\n" + this.student.getAdvisor();
+
+        try {
+            FileWriter fileWriter = new FileWriter(filename);
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+
+            bufferedWriter.write(content);
+            bufferedWriter.close();
+
+        } catch (IOException e) {
+            System.out.println("An error occurred while writing to the file.");
+            e.printStackTrace();
+        }
+    }
+
     // Other Methods
     public static void main(String[] args) throws FileNotFoundException {
 
@@ -120,10 +183,10 @@ public class Driver {
         if(student.getName().equals("empty")){
             student = driver.questionsForStudent();
         }
+        driver.WriteFile();
         System.out.println("Welcome" + " " + student.getName());
-        System.out.printf("Here are the commands available at this point:\n1. help: get a list of commands" +
-                "\n2. automatic : get the program to automatically set up the schedule for you" +
-                "\n3. manual : set up the schedule yourself by searching for classes\n", "");
+        System.out.print("Start by typing a command to do something\n" +
+                "If you are confused just type the command \"help\" and it enter ");
 
         ArrayList<Course> allCourses = new ArrayList<>();
         Scanner fileScn = new Scanner(new File("2020-2021.csv"));
@@ -242,19 +305,22 @@ public class Driver {
             }
             else if (userInput.equalsIgnoreCase("delete")){
                 System.out.println("Enter the name of the schedule to be deleted");
-               String scheduleName = scnr.nextLine();
+                String scheduleName = scnr.nextLine();
                 student.removeSchedule(scheduleName);
                 System.out.println("Your schedule has been removed");
             }
-            else if (userInput.equalsIgnoreCase("display")){
+            else if (userInput.equalsIgnoreCase("display")) {
                 System.out.println("Enter the name of the schedule you wish to display");
                 String scheduleName = scnr.nextLine();
+                String directoryPath = "/schedules";
 
-                for(Schedule s : student.getSchedules()){
-                    if(s.getTitle().equals(scheduleName)){
-                        s.DisplaySchedule();
+                File directory = new File(directoryPath);
+                File[] files = directory.listFiles();
+
+                for (File file : files) {
+                    if (file.isFile()) {
+                        System.out.println(file.getName());
                     }
-
                 }
             }
             // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
