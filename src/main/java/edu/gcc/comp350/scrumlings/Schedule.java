@@ -11,6 +11,8 @@ class Schedule {
     private ArrayList<Course> courses;
     private String title;
 
+    private boolean savedStatus = false;
+
     // Constructor
     public Schedule() {
         courses = new ArrayList<>();
@@ -23,12 +25,16 @@ class Schedule {
     }
 
     // Getters and Setters
+    public boolean getSavedStatus() { return savedStatus; }
+
+    public void setSavedStatus(boolean status) { savedStatus = status; }
+
     public ArrayList<Course> getCourses() {
         return courses;
     }
 
     public Schedule(File f) {
-        this.title = f.getName().split(".")[0];
+        this.title = f.getName().substring(0, f.getName().length() - 9);
         courses = new ArrayList<>(); // TODO parse courses into schedule
     }
 
