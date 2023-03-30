@@ -11,7 +11,7 @@ class Schedule {
     private String title;
 
     // Constructor
-    public Schedule(String title, String placeholder) {
+    public Schedule(String title) {
         this.title = title;
 
         courses = new ArrayList<>();
@@ -65,21 +65,29 @@ class Schedule {
 
     // Other Methods
     public void addCourse(Course c) throws Exception {
-
+        //this.courses.add(c);
+        // works with bug?
         //compare course to current schedule's list of classes
-        for (int i = 0; i < this.getCourses().size(); i++) {
-
-            //{"M 12", "W 12", "F 12"}
-           // String[] one = c.getDate();
-           // String[] two = this.courses.get(i).getDate();
-
-            //for each course in Schedule.course compare date to c.date
-              boolean b = is_conflict(c.getDate(),this.courses.get(i).getDate());
-           // System.out.println(b);
-                if (b == false) {
-                    System.out.println("Course has been added");
+        if (courses.isEmpty()) {
+            this.courses.add(c);
+        } else {
+            //boolean conflict = true;
+            boolean b = true;
+            int i;
+            for ( i = 0; i < this.getCourses().size(); i++) {
+                //for each course in Schedule.course compare date to c.date
+                b = is_conflict(c.getDate(), this.courses.get(i).getDate());
+                // System.out.println(b);
+                if(b == true) {
+                    break;
                 }
-                if(b) {
+            }
+
+            if (b == false) {
+                this.courses.add(c);
+                System.out.println("Course has been added");
+            }
+                if (b == true) {
                     Scanner scnr = new Scanner(System.in);
                     String userInput = "";
 
@@ -95,8 +103,8 @@ class Schedule {
 
                     //if scanner is 1 then add course and delete
                     if (userInput.equals("1")) {
-                        this.courses.add(c);
                         this.courses.remove(i);
+                        this.courses.add(c);
                         System.out.println("Course has been added");
                     }
                     //if scanner is 2 then continue
@@ -108,20 +116,18 @@ class Schedule {
             }
         }
 
-      // ["M 12"]
-      // ["M 12"]
-      // returning false should be true
 
+    // [M 10], [W 10] , [F 10]
     public boolean is_conflict(String [] time_1, String [] time_2){
-       // System.out.println(time_1.length);
-       // System.out.println(time_2.length);
-// otherwise compare the two dates
+       // System.out.println("Time 1: " + time_1.length);
+       //System.out.println("Time 2: " + time_2.length);
+       // otherwise compare the two dates
      for (int i = 0; i < time_1.length ; i++){
-           // System.out.println(" This is comparing " + time_1[i] + " out of " + time_1);
-           // System.out.println(time_1[i]);
+           // System.out.println(" This is comparing " + time_1[i] + " out of Time 1" );
+            // System.out.println(time_1[i]);
             for (int j = 0; j < time_2.length; j++){
-            //   System.out.println(" and this " + time_2[j] + " out of " + time_2);
-              //  System.out.println(time_2[j]);
+            //  System.out.println(" and this " + time_2[j] + " out of Time 2");
+                 // System.out.println(time_2[j]);
                 if (time_1[i].equals(time_2[j])){
                     return true;
                 }

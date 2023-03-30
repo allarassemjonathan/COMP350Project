@@ -30,8 +30,11 @@ public class Course {
 
     @Override
     public String toString() {
-        String dateString = date[0] + " " + date[1] + " " + date[2] + " " + date[3] + " " + date[4];
-        return dept + " " + courseNum + " " + section + " " + title + " " + dateString + " " + professor;
+        String dateString = "";
+
+        String result = dept + " " + courseNum + " " + section + " " + title + " " +
+                date[0] + " " +date[1] + " " + date[2] + " " +date[3] + " " +date[4] + " " + professor;
+        return result;
     }
 
 

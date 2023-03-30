@@ -15,9 +15,11 @@ import java.util.Scanner;
 public class Driver {
     // Member Variables
     private Student student;
-    private Schedule schedule;
+   // private Schedule schedule;
     private Generator generator;
     private Search search;
+
+
     private static Scanner scnr = new Scanner(System.in);
     private static String userInput = "";
     private static String help = "Write list of commands and what they do in this string," +
@@ -31,7 +33,7 @@ public class Driver {
     // Constructor
     public Driver(Student student, Schedule schedule, Generator generator, Search search) {
         this.student = student;
-        this.schedule = schedule;
+       // this.schedule = schedule;
         this.generator = generator;
         this.search = search;
     }
@@ -43,12 +45,12 @@ public class Driver {
     public void setStudent(Student student) {
         this.student = student;
     }
-    public Schedule getSchedule() {
-        return schedule;
-    }
-    public void setSchedule(Schedule schedule) {
-        this.schedule = schedule;
-    }
+    //public Schedule getSchedule() {
+    //    return schedule;
+    //}
+   // public void setSchedule(Schedule schedule) {
+    //    this.schedule = schedule;
+   // }
     public Generator getGenerator() {
         return generator;
     }
@@ -110,8 +112,8 @@ public class Driver {
     }
 
     // Other Methods
-    public static void main(String[] args) throws FileNotFoundException {
-
+    public static void main(String[] args) throws Exception {
+        Schedule schedule = null;
         // root/init
         System.out.println("Scrumlings Semester Scheduler!");
         // if you have already used the app, it remembers you otherwise it ask for info
@@ -171,10 +173,11 @@ public class Driver {
                 System.out.println(student.getName() + " you have selected to manually create a schedule");
                 System.out.println("Enter a name for your schedule:  ");
                 String scheduleName = scnr.nextLine();
-                Schedule mySchedule = new Schedule(scheduleName, "placeholder");
+              // Schedule mySchedule = new Schedule(scheduleName, "placeholder");
+                schedule = new Schedule(scheduleName);
                 System.out.println("Your schedule " + scheduleName + " has been created! To find classes, type search.");
-                student.addSchedule(mySchedule);
-                System.out.println("schedule added");
+                student.addSchedule(schedule);
+                //System.out.println("schedule added");
             }
 
             else if (userInput.equalsIgnoreCase("search")){
@@ -212,7 +215,6 @@ public class Driver {
                         System.out.println(result + ". " + c.toString());
                         result++;
                         //0. dept + number + section + title + date + professor
-                        //1. etc
                     }
                     System.out.println(search.getFilters());
                     System.out.println("Would you like to add another filter? Y/N");
@@ -220,15 +222,27 @@ public class Driver {
                         break;
                     }
                 }
+               // search.setResultCourses(search.searchCourses((allCourses)));
+                System.out.println("Enter the number of the class you wish to add");
+                int courseNum = scnr.nextInt();
+                Course found = search.getResultCourses().get(courseNum);
+                //System.out.println(found.toString());
+                schedule.addCourse(found);
 
+                System.out.println("Your classes are now: ");
+                for(Course r: schedule.getCourses()){
+                    System.out.println(r.toString());
+                }
+                System.out.println("Enter a command to continue scheduling ");
             }
+
 
             else if (userInput.equalsIgnoreCase("automatic")){
 
             }
             else if (userInput.equalsIgnoreCase("delete")){
                 System.out.println("Enter the name of the schedule to be deleted");
-               String scheduleName = scnr.nextLine();
+                String scheduleName = scnr.nextLine();
                 student.removeSchedule(scheduleName);
                 System.out.println("Your schedule has been removed");
             }
@@ -242,6 +256,7 @@ public class Driver {
                     }
 
                 }
+
             }
             // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             else {
