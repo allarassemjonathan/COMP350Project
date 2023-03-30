@@ -29,6 +29,7 @@ class Schedule {
 
     public Schedule(File f) {
         this.title = f.getName().split(".")[0];
+        courses = new ArrayList<>(); // TODO parse courses into schedule
     }
 
     public void setCourses(ArrayList<Course> courses) {
