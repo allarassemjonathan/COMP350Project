@@ -270,11 +270,12 @@ public class Driver {
                         filter = scnr.nextLine().toUpperCase();
                         search.addFilter(type, filter);
                     }
-//                else if (type.equals("date")) {
-//                    System.out.println("Enter the days of the week followed by the start and end time of your search");
-//                    filter = scnr.nextLine();
-//                    System.out.println(type + " " + filter);
-//                }
+                else if (type.equals("date")) {
+                    System.out.println("Enter the first day of the week followed by the start time of your search");
+                    filter = scnr.nextLine();
+                    search.addFilter(type, filter);
+
+                }
                     else if (type.equals("code")) {
                         System.out.println("Enter the course department and code of your search");
                         filter = scnr.nextLine().toUpperCase();
@@ -291,7 +292,7 @@ public class Driver {
                         //0. dept + number + section + title + date + professor
                         //1. etc
                     }
-                    System.out.println(search.getFilters());
+                    //System.out.println(search.getFilters());
                     System.out.println("Would you like to add another filter? Y/N");
                     if (scnr.nextLine().equalsIgnoreCase("n")) {
                         break;
