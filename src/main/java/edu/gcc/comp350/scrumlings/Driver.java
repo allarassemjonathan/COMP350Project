@@ -5,12 +5,13 @@ import java.util.*;
 public class Driver {
     // Member Variables
     private Student student;
-    private Schedule schedule;
+   // private Schedule schedule;
     private Generator generator;
     private Search search;
     private final static ArrayList<Course> allCourses = init_courses();
     private static Scanner scnr = new Scanner(System.in);
     private static String userInput = "";
+    private Schedule schedule;
     private static String help = "List of commands:" +
             "\nmanual: allows you to manually create a schedule" +
             "\ndelete: allows you to delete a schedule you have created" +
@@ -43,6 +44,7 @@ public class Driver {
     public void setStudent(Student student) {
         this.student = student;
     }
+
     public Schedule getSchedule() {
         return schedule;
     }
@@ -50,6 +52,7 @@ public class Driver {
         this.schedule = schedule;
     }
     public Generator getGenerator() { return generator; }
+
     public void setGenerator(Generator generator) {
         this.generator = generator;
     }
@@ -345,7 +348,9 @@ public class Driver {
     }
 
     // Other Methods
-    public static void main(String[] args) throws FileNotFoundException {
+
+    public static void main(String[] args) throws Exception {
+        Schedule schedule = null;
         // root/init
         System.out.println("Scrumlings Semester Scheduler!");
         // if you have already used the app, it remembers you otherwise it ask for info
@@ -394,10 +399,11 @@ public class Driver {
                 System.out.println(student.getName() + " you have selected to manually create a schedule");
                 System.out.println("Enter a name for your schedule:  ");
                 String scheduleName = scnr.nextLine();
-                Schedule mySchedule = new Schedule(scheduleName, "placeholder");
+              // Schedule mySchedule = new Schedule(scheduleName, "placeholder");
+                schedule = new Schedule(scheduleName);
                 System.out.println("Your schedule " + scheduleName + " has been created! To find classes, type search.");
-                student.addSchedule(mySchedule);
-                System.out.println("schedule added");
+                student.addSchedule(schedule);
+                //System.out.println("schedule added");
             }
             // saving schedule to computer
             else if (userInput.equalsIgnoreCase("save schedule")) {
@@ -444,7 +450,6 @@ public class Driver {
                         System.out.println(result + ". " + c.toString());
                         result++;
                         //0. dept + number + section + title + date + professor
-                        //1. etc
                     }
                     //System.out.println(search.getFilters());
                     System.out.println("Would you like to add another filter? Y/N");
@@ -452,8 +457,20 @@ public class Driver {
                         break;
                     }
                 }
+               // search.setResultCourses(search.searchCourses((allCourses)));
+                System.out.println("Enter the number of the class you wish to add");
+                int courseNum = scnr.nextInt();
+                Course found = search.getResultCourses().get(courseNum);
+                //System.out.println(found.toString());
+                schedule.addCourse(found);
 
+                System.out.println("Your classes are now: ");
+                for(Course r: schedule.getCourses()){
+                    System.out.println(r.toString());
+                }
+                System.out.println("Enter a command to continue scheduling ");
             }
+
 
             else if (userInput.equalsIgnoreCase("automatic")){
 
