@@ -54,14 +54,14 @@ public class Search {
                 String currCourse = fileScn.nextLine();
                 String[] courseData = currCourse.split(",");
 
-                if (courseData[5].contains(filter)) { //title entry matches filtered title
-                    Course newCourse = new Course();
-                    newCourse.setDept(courseData[2]);
-                    newCourse.setCourseNum(Integer.parseInt(courseData[3]));
-                    newCourse.setSection(courseData[4].charAt(0));
-                    newCourse.setTitle(courseData[5]);
-                    String[] date = {courseData[9]+courseData[10]+courseData[11]+courseData[12]
-                    +courseData[13], courseData[14], courseData[15]};
+//                if (courseData[5].contains(filter)) { //title entry matches filtered title
+//                    Course newCourse = new Course();
+//                    newCourse.setDept(courseData[2]);
+//                    newCourse.setCourseNum(Integer.parseInt(courseData[3]));
+//                    newCourse.setSection(courseData[4].charAt(0));
+//                    newCourse.setTitle(courseData[5]);
+//                    String[] date = {courseData[9]+courseData[10]+courseData[11]+courseData[12]
+//                    +courseData[13], courseData[14], courseData[15]};
                    // newCourse.setDate(date);
                    // System.out.println(newCourse.getDept());
                    // System.out.println(newCourse.getCourseNum());
@@ -69,7 +69,7 @@ public class Search {
                    // System.out.println(newCourse.getTitle());
                    // System.out.println(newCourse.getDate());
                    // resultCourses.add(newCourse);
-                }
+               // }
 //
 //
 //

@@ -1,5 +1,6 @@
 package edu.gcc.comp350.scrumlings;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -26,8 +27,8 @@ class Schedule {
         return courses;
     }
 
-    public Schedule(StringBuilder sb) {
-        this.title = sb.toString();
+    public Schedule(File f) {
+        this.title = f.getName().split(".")[0];
     }
 
     public void setCourses(ArrayList<Course> courses) {

@@ -210,13 +210,7 @@ public class Driver {
                         // if user selects a schedule
                         else if (scheduleNames.contains(userInput)) {
                             f = new File(System.getProperty("user.dir") + "/files/" + userInput + ".schedule");
-                            Scanner fr = new Scanner(f);
-                            StringBuilder content = new StringBuilder();
-                            while (fr.hasNext()) {
-                                content.append(fr.nextLine());
-                            }
-                            fr.close();
-                            return new Schedule(content);
+                            return new Schedule(f);
                         } else {
                             System.out.println("I couldn't find that one, here are the schedules I found");
                             System.out.println(scheduleNames);
@@ -235,12 +229,7 @@ public class Driver {
                 }
             } else {
                 Scanner fr = new Scanner(f);
-                StringBuilder content = new StringBuilder();
-                while (fr.hasNext()) {
-                    content.append(fr.nextLine());
-                }
-                fr.close();
-                return new Schedule(content);
+                return new Schedule(f);
             }
         } catch (Exception e) {
             e.printStackTrace();
