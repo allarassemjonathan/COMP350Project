@@ -189,7 +189,7 @@ public class Driver {
     private Schedule importSchedule() {
         System.out.println("What is the name of your schedule?");
         String name = scnr.nextLine();
-        File f = new File(System.getProperty("user.dir") + "/files/" + name + ".schedule");
+        File f = new File(System.getProperty("user.dir") + "/Schedules/" + name + ".schedule");
         try {
             // if the schedule doesn't exist
             if (f.createNewFile()) {
