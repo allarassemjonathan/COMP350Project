@@ -246,6 +246,21 @@ public class Driver {
                 student.removeSchedule(scheduleName);
                 System.out.println("Your schedule has been removed");
             }
+            else if (userInput.equalsIgnoreCase("remove")){
+                System.out.println("Enter number next to the course you wish to delete");
+                int i = 0;
+                for(Course r: schedule.getCourses()){
+                    System.out.println(i + ". " + r.toString());
+                    i++;
+                }
+                int number = scnr.nextInt();
+                schedule.removeCourse(number);
+                System.out.println("Your course has been delete");
+                System.out.println("Here is your updated schedule: ");
+                for(Course r: schedule.getCourses()){
+                    System.out.println(r.toString());
+                }
+            }
             else if (userInput.equalsIgnoreCase("display")){
                 System.out.println("Enter the name of the schedule you wish to display");
                 String scheduleName = scnr.nextLine();

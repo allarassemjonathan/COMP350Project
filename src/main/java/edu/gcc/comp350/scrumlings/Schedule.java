@@ -115,6 +115,25 @@ class Schedule {
                 }
             }
         }
+    public void removeCourse(Course c) throws Exception {
+        //this.courses.add(c);
+        // works with bug?
+        //compare course to current schedule's list of classes
+        if (courses.isEmpty()) {
+            System.out.println("Your schedule is empty");
+        } else {
+            //boolean conflict = true;
+            boolean b = true;
+            int i;
+            for (i = 0; i < this.getCourses().size(); i++) {
+                //for each course in Schedule.course compare date to c.date
+                if (c.getTitle().equals(this.courses.get(i).getTitle())) {
+                    courses.remove(c);
+                }
+            }
+
+        }
+    }
 
 
     // [M 10], [W 10] , [F 10]
@@ -136,9 +155,7 @@ class Schedule {
         return false;
     }
 
-    public void removeCourse(Course course) {
-        courses.remove(course);
-    }
+
     public void removeCourse(int index) {
         courses.remove(index);
     }
