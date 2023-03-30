@@ -26,7 +26,7 @@ public class Driver {
             "Mathematics", "Computer Science", "Electrical Engineering", "Mechanical Engineering",
             "Chemistry", "Biology", "Physics", "Political Science", "Data Science", "Philosophy",
             "Conservation Biology", "Exercise Science", "Computer Engineering", "Communication and Art",
-            "Design and Innovation"
+            "Design and Innovation", "Musics", "Economy"
     };
     public Driver(){
 
@@ -133,9 +133,8 @@ public class Driver {
                     String name = read.nextLine();
                     String major = read.nextLine();
                     String email = read.nextLine();
-                    int semester = read.nextInt();
-                    read.next();
                     String advisor = read.nextLine();
+                    int semester = read.nextInt();
                     student = new Student(name, major, email,advisor, semester);
                     return student;
                 } else {
@@ -156,8 +155,8 @@ public class Driver {
         String content = this.student.getName()
                 + "\n" + this.student.getMajor()
                 + "\n" + this.student.getEmail()
-                + "\n" + this.student.getSemester()
-                + "\n" + this.student.getAdvisor();
+                + "\n" + this.student.getAdvisor()
+                + "\n" + this.student.getSemester();
 
         try {
             FileWriter fileWriter = new FileWriter(filename);
@@ -185,7 +184,7 @@ public class Driver {
         }
         driver.WriteFile();
         System.out.println("Welcome" + " " + student.getName());
-        System.out.print("Start by typing a command to do something\n" +
+        System.out.println("Start by typing a command to do something\n" +
                 "If you are confused just type the command \"help\" and it enter ");
 
         ArrayList<Course> allCourses = new ArrayList<>();
@@ -311,18 +310,19 @@ public class Driver {
                 System.out.println("Your schedule has been removed");
             }
             else if (userInput.equalsIgnoreCase("display")) {
-                System.out.println("Enter the name of the schedule you wish to display");
-                String scheduleName = scnr.nextLine();
-                String directoryPath = "/schedules";
-
+                System.out.println("Here is the list of saved schedules:");
+                //String scheduleName = scnr.nextLine();
+                // read from the directory and print all the files's name
+                String directoryPath = "schedules/";
                 File directory = new File(directoryPath);
                 File[] files = directory.listFiles();
-
                 for (File file : files) {
                     if (file.isFile()) {
-                        System.out.println(file.getName());
+                        System.out.println("[FILENAME] " +  file.getName());
                     }
                 }
+                System.out.println("Type the name of the schedule you want to load");
+                String scheduleName = scnr.nextLine();
             }
             // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             else {
