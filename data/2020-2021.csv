@@ -1,4 +1,4 @@
-﻿yr_cde,trm_cde,crs_comp1,crs_comp2,crs_comp3,crs_title,credit_hrs,crs_capacity,crs_enrollment,monday_cde,tuesday_cde,wednesday_cde,thursday_cde,friday_cde,begin_tim,end_tim,last_name,first_name,preferred_name,comment_txt
+yr_cde,trm_cde,crs_comp1,crs_comp2,crs_comp3,crs_title,credit_hrs,crs_capacity,crs_enrollment,monday_cde,tuesday_cde,wednesday_cde,thursday_cde,friday_cde,begin_tim,end_tim,last_name,first_name,preferred_name,comment_txt
 2020,10,ACCT,201,A,PRINCIPLES OF ACCOUNTING I,3,30,30,M,,W,,F,9:00:00 AM,9:50:00 AM,Stone,Jennifer,Nicole,Online materials fee
 2020,10,ACCT,201,B,PRINCIPLES OF ACCOUNTING I,3,30,32,M,,W,,F,11:00:00 AM,11:50:00 AM,Snyder,Richard,,Online materials fee
 2020,10,ACCT,201,D,PRINCIPLES OF ACCOUNTING I,3,30,31,M,,W,,F,1:00:00 PM,1:50:00 PM,Snyder,Richard,,Online materials fee
@@ -8,7 +8,7 @@
 2020,30,ACCT,202,B,PRINCIPLES OF ACCOUNTING II,3,30,29,M,,W,,F,11:00:00 AM,11:50:00 AM,Stone,Jennifer,Nicole,ACCT 201; Online Materials Fee
 2020,30,ACCT,202,D,PRINCIPLES OF ACCOUNTING II,3,30,28,M,,W,,F,1:00:00 PM,1:50:00 PM,Snyder,Richard,,ACCT 201; Online Materials Fee
 2020,30,ACCT,202,E,PRINCIPLES OF ACCOUNTING II,3,30,28,M,,W,,F,3:00:00 PM,3:50:00 PM,Snyder,Richard,,ACCT 201; Online Materials Fee
-2020,30,ACCT,202,O,PRINCIPLES OF ACCOUNTING II,3, ,5,,,,,,,,Stone,Jennifer,Nicole,ACCT 201; Online Materials Fee
+2020,30,ACCT,202,O,PRINCIPLES OF ACCOUNTING II,3,0,5,,,,,,,,Stone,Jennifer,Nicole,ACCT 201; Online Materials Fee
 2020,10,ACCT,301,A,INTERMEDIATE ACCOUNTING I,3,26,10,,,,R,,4:00:00 PM,5:50:00 PM,McFeaters,Michelle,,
 2020,10,ACCT,301,A,INTERMEDIATE ACCOUNTING I,3,26,10,M,,W,,F,8:00:00 AM,8:50:00 AM,McFeaters,Michelle,,"ACCT 202, Online Materials Fee"
 2020,10,ACCT,301,B,INTERMEDIATE ACCOUNTING I,3,26,21,,,,R,,4:00:00 PM,5:50:00 PM,Stone,Jennifer,Nicole,

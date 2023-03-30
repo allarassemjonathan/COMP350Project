@@ -1,5 +1,6 @@
 package edu.gcc.comp350.scrumlings;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -10,17 +11,31 @@ class Schedule {
     private ArrayList<Course> courses;
     private String title;
 
-    boolean saved = false;
+    private boolean savedStatus = false;
 
     // Constructor
+    public Schedule() {
+        courses = new ArrayList<>();
+    }
+
     public Schedule(String title, String placeholder) {
         this.title = title;
+
         courses = new ArrayList<>();
     }
 
     // Getters and Setters
+    public boolean getSavedStatus() { return savedStatus; }
+
+    public void setSavedStatus(boolean status) { savedStatus = status; }
+
     public ArrayList<Course> getCourses() {
         return courses;
+    }
+
+    public Schedule(File f) {
+        this.title = f.getName().substring(0, f.getName().length() - 9);
+        courses = new ArrayList<>(); // TODO parse courses into schedule
     }
 
     public void setCourses(ArrayList<Course> courses) {
@@ -107,16 +122,12 @@ class Schedule {
 
                 }
             }
-        saved = false;
         }
-
 
       // ["M 12"]
       // ["M 12"]
       // returning false should be true
-public boolean getSavedStatus(){
-        return saved;
-}
+
     public boolean is_conflict(String [] time_1, String [] time_2){
        // System.out.println(time_1.length);
        // System.out.println(time_2.length);
@@ -136,7 +147,6 @@ public boolean getSavedStatus(){
     }
 
     public void removeCourse(Course course) {
-        saved = false;
         courses.remove(course);
     }
     public void removeCourse(int index) {
