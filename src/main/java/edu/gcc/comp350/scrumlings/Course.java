@@ -47,6 +47,10 @@ public class Course {
 
     }
 
+    public Course(String name){
+        this.title= name;
+    }
+
     // Getters and Setters
     public String getTitle() {
         return title;
@@ -137,8 +141,15 @@ public class Course {
     public String toString() {
         String dateString = "";
 
-        String result = dept + " " + courseNum + " " + section + " " + title + " " +
-                date[0] + " " +date[1] + " " + date[2] + " " +date[3] + " " +date[4] + " " + professor;
+        String result = dept + " " + courseNum + " " + section + " " + title + " " ;
+        for (String dateElement : date){
+            result+=" " + date;
+        }
+        result += " " + professor;
         return result;
+    }
+
+    public String vizualize(){
+        return dept + " " + courseNum + " " + section + " " + title + " " ;
     }
 }

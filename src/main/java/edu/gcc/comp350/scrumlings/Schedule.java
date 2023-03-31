@@ -1,6 +1,9 @@
 package edu.gcc.comp350.scrumlings;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -18,7 +21,6 @@ class Schedule {
         courses = new ArrayList<>();
     }
 
-
     public Schedule(String title) {
         this.title = title;
 
@@ -26,7 +28,9 @@ class Schedule {
     }
 
     // Getters and Setters
-    public boolean getSavedStatus() { return savedStatus; }
+    public boolean getSavedStatus() {
+        return savedStatus;
+    }
 
     public void setSavedStatus(boolean status) { savedStatus = status; }
 
@@ -36,9 +40,26 @@ class Schedule {
 
     public Schedule(File f) {
         this.title = f.getName().substring(0, f.getName().length() - 9);
-        courses = new ArrayList<>(); // TODO parse courses into schedule
+        if (f.exists() && f.isFile()) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(f))) {
+                String line;
+                StringBuilder sb = new StringBuilder();
+                while ((line = reader.readLine()) != null) {
+                    sb.append(line);
+                    sb.append(System.lineSeparator());
+                }
+                String fileContent = sb.toString().trim();
+                // TODO parse courses into schedule
+                Scanner inline = new Scanner(fileContent);
+                while(inline.hasNext()){
+                    String portion = inline.nextLine();
+                    Character day = portion.charAt(0);
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
-
     public void setCourses(ArrayList<Course> courses) {
         this.courses = courses;
     }
@@ -64,18 +85,29 @@ class Schedule {
         calendar.put('F', new ArrayList<>());
 
         // Fill in the calendar with actual classes
-        for (Course course : this.getCourses()){
+        System.out.println(" " + this.courses.size() + " classes in the schedule");
+        for (Course course : this.courses){
             String[] times = course.getDate();
             for (int i = 0; i < times.length; i++){
-                Character key = course.getDate()[i].charAt(0);
-                ArrayList<Course> temp = calendar.get(key);
-                temp.add(course);
-                calendar.put(key, temp);
+                if (course.getDate()[i].length()!=0){
+                    Character key = course.getDate()[i].charAt(0);
+                    ArrayList<Course> temp = calendar.get(key);
+                    temp.add(course);
+                    calendar.put(key, temp);
+                }
             }
         }
-        String out = "";
+        String out = "||";
         for (Character c: calendar.keySet()){
-            out += c + " " + calendar.get(c) +"\n";
+            out += c + " |";
+            ArrayList<Course> els = calendar.get(c);
+            for (Course el : els){
+                out+= el.getTitle() + "|";
+//                for (String part : el.getDate()){
+//                    out += part + " ";
+//                }
+            }
+            out += "|\n";
         }
         return out;
     }
@@ -85,8 +117,10 @@ class Schedule {
         //this.courses.add(c);
         // works with bug?
         //compare course to current schedule's list of classes
+        System.out.println("Adding a course");
         if (courses.isEmpty()) {
             this.courses.add(c);
+            System.out.println("empty adding");
         } else {
             //boolean conflict = true;
             boolean b = true;
@@ -95,16 +129,17 @@ class Schedule {
                 //for each course in Schedule.course compare date to c.date
                 b = is_conflict(c.getDate(), this.courses.get(i).getDate());
                 // System.out.println(b);
-                if(b == true) {
+                System.out.println("non-empty adding");
+                if(b) {
                     break;
                 }
             }
 
-            if (b == false) {
+            if (!b) {
                 this.courses.add(c);
                 System.out.println("Course has been added");
             }
-                if (b == true) {
+                if (b) {
                     Scanner scnr = new Scanner(System.in);
                     String userInput = "";
 
@@ -128,9 +163,9 @@ class Schedule {
                     else if (userInput.equals("2")) {
                         System.out.println("You have kept the original course");
                     }
-
                 }
             }
+        System.out.println(this.courses.size() + " added.");
         }
 
     public void removeCourse(Course c) throws Exception {
@@ -177,4 +212,5 @@ class Schedule {
     public void removeCourse(int index) {
         courses.remove(index);
     }
+
 }

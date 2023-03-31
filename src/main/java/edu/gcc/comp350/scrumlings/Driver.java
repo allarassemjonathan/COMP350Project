@@ -155,7 +155,7 @@ public class Driver {
                                 Integer.parseInt(name[1]),
                                 (name[2].length() == 0) ? '\0' : name[2].charAt(0),
                                 name[3],
-                                (entry.getValue().get(0) == "10"),
+                                (Objects.equals(entry.getValue().get(0), "10")),
                                 Integer.parseInt(entry.getValue().get(1)),
                                 Integer.parseInt(entry.getValue().get(2)),
                                 entry.getValue().get(3).split(","), // TODO implement
@@ -347,14 +347,32 @@ public class Driver {
         }
     }
 
+    public void saveFile(){
+        String filename = "schedules/" + this.schedule.getTitle() + ".schedule";
+        String content = this.schedule.DisplaySchedule();
+
+        try {
+            FileWriter fileWriter = new FileWriter(filename);
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+
+            bufferedWriter.write(content);
+            bufferedWriter.close();
+
+        }catch (IOException e) {
+            System.out.println("An error occurred while writing to the file.");
+            e.printStackTrace();
+        }
+        System.out.println("saved");
+    }
     // Other Methods
 
     public static void main(String[] args) throws Exception {
-        Schedule schedule = null;
         // root/init
         System.out.println("Scrumlings Semester Scheduler!");
         // if you have already used the app, it remembers you otherwise it ask for info
         Driver driver = new Driver();
+        Schedule schedule = driver.schedule;
+        schedule = new Schedule();
         Student student = driver.ReadFile();
         if(student.getName().equals("empty")){
             student = driver.questionsForStudent();
@@ -372,9 +390,11 @@ public class Driver {
                 if (!driver.schedule.getSavedStatus()){
                     Scanner sc = new Scanner(System.in);
                     if(sc.next().equals("yes")){
-                        //TODO save the scedule
+                        driver.saveFile();
+                        //TODO save the schedule
                     }
                     else if(sc.next().equals("no")){
+
                         //TODO do not save
                     }
                     else{
@@ -393,7 +413,6 @@ public class Driver {
             else if (userInput.equalsIgnoreCase("help")) {
                 System.out.println(help);
             }
-
             // add commands here with an else if (userInput.equalsIgnoreCase([COMMAND])) {}
             else if (userInput.equalsIgnoreCase("manual")){
                 System.out.println(student.getName() + " you have selected to manually create a schedule");
@@ -411,17 +430,24 @@ public class Driver {
             }
             // importing schedule
             else if (userInput.equalsIgnoreCase("Import Schedule")) {
-                driver.schedule = driver.importSchedule();
+                schedule = driver.importSchedule();
             }
-
             else if (userInput.equalsIgnoreCase("search")){
                 boolean searching = true;
                 Search search = new Search();
+                int result = 0;
                 while (searching) {
                     System.out.println("If you would like to add a filter to your search, enter title, date, or code. " +
                             "Otherwise enter skip.");
                     String type = scnr.nextLine();
                     String filter;
+                    while(!type.equalsIgnoreCase("skip")
+                            && !type.equalsIgnoreCase("title")
+                            && !type.equals("date")
+                            && !type.equals("code")){
+                        System.out.println("Give a legal filter");
+                        type = scnr.nextLine();
+                    }
                     if (type.equalsIgnoreCase("skip")) {
                         System.out.println("No filters added.");
                     }
@@ -430,22 +456,20 @@ public class Driver {
                         filter = scnr.nextLine().toUpperCase();
                         search.addFilter(type, filter);
                     }
-                else if (type.equals("date")) {
-                    System.out.println("Enter the first day of the week followed by the start time of your search");
-                    filter = scnr.nextLine();
-                    search.addFilter(type, filter);
+                    else if (type.equals("date")) {
+                        System.out.println("Enter the first day of the week followed by the start time of your search");
+                        filter = scnr.nextLine();
+                        search.addFilter(type, filter);
 
-                }
+                    }
                     else if (type.equals("code")) {
                         System.out.println("Enter the course department and code of your search");
                         filter = scnr.nextLine().toUpperCase();
                         search.addFilter(type, filter);
                     }
-                    else {
-                        System.out.println("Please enter a valid search filter.");
-                    }
+
                     search.setResultCourses(search.searchCourses(allCourses));
-                    int result = 0;
+
                     for (Course c: search.getResultCourses()) {
                         System.out.println(result + ". " + c.toString());
                         result++;
@@ -458,20 +482,37 @@ public class Driver {
                     }
                 }
                // search.setResultCourses(search.searchCourses((allCourses)));
-                System.out.println("Enter the number of the class you wish to add");
-                int courseNum = scnr.nextInt();
-                Course found = search.getResultCourses().get(courseNum);
-                //System.out.println(found.toString());
-                schedule.addCourse(found);
-
-                System.out.println("Your classes are now: ");
-                for(Course r: schedule.getCourses()){
-                    System.out.println(r.toString());
+                if(search.getResultCourses().size()>0){
+                    System.out.println("Enter the number of the class you wish to add or -1 not to");
+                    while(true){
+                        int courseNum;
+                        try{
+                            courseNum = scnr.nextInt();
+                            if(courseNum!=-1){
+                                if (courseNum<0 || courseNum>search.getResultCourses().size()){
+                                    throw new Exception("Give a number in the list");
+                                }
+                                Course found = search.getResultCourses().get(courseNum);
+                                //System.out.println(found.toString());
+                                schedule.addCourse(found);
+                                System.out.println("Your classes are now: ");
+                                for(Course r: schedule.getCourses()){
+                                    System.out.println(r.toString());
+                                }
+                                break;
+                            }
+                        }catch (InputMismatchException e){
+                            System.out.println("Give a number not a string");
+                            courseNum = scnr.nextInt();
+                        }
+                    }
+                    scnr.nextLine();
+                    System.out.println("Enter a command to continue planning");
                 }
-                System.out.println("Enter a command to continue scheduling ");
+                else{
+                    System.out.println("No result found.");
+                }
             }
-
-
             else if (userInput.equalsIgnoreCase("automatic")){
 
             }
@@ -498,19 +539,27 @@ public class Driver {
             }
 
             else if (userInput.equalsIgnoreCase("display")) {
-                System.out.println("Here is the list of saved schedules:");
-                //String scheduleName = scnr.nextLine();
-                // read from the directory and print all the files's name
-                String directoryPath = "schedules/";
-                File directory = new File(directoryPath);
-                File[] files = directory.listFiles();
-                for (File file : files) {
-                    if (file.isFile()) {
-                        System.out.println("[FILENAME] " +  file.getName());
-                    }
+                Scanner sc = new Scanner(System.in);
+                System.out.println("Do you want to visualized current schedule?");
+                if(sc.next().equalsIgnoreCase("yes")){
+                    System.out.println(schedule.DisplaySchedule());
+                    System.out.println("Here we are");
                 }
-                System.out.println("Type the name of the schedule you want to load");
-                String scheduleName = scnr.nextLine();
+                else{
+                    System.out.println("Here is the list of saved schedules:");
+                    //String scheduleName = scnr.nextLine();
+                    // read from the directory and print all the file's name
+                    String directoryPath = "schedules/";
+                    File directory = new File(directoryPath);
+                    File[] files = directory.listFiles();
+                    for (File file : files) {
+                        if (file.isFile()) {
+                            System.out.println("[FILENAME] " +  file.getName());
+                        }
+                    }
+                    System.out.println("Type the name of the schedule you want to load");
+                    String scheduleName = scnr.nextLine();
+                }
             }
             // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             else {
@@ -520,5 +569,8 @@ public class Driver {
         }
         // termination processes go here
         System.out.println("Closing program, thank you!");
+
+//        File f = new File("schedules/test1.schedule");
+//        Schedule sch = new Schedule(f);
     }
 }
