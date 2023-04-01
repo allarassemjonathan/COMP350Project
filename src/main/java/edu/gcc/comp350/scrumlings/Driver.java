@@ -441,7 +441,7 @@ public class Driver {
                     driver.schedule = new Schedule(scheduleName);
                     ArrayList<Schedule> schedules = new ArrayList<>();
                     schedules.add(driver.schedule);
-                    student.setSchedules(schedules);
+                   // student.setSchedules(schedules);
                     System.out.println("Your schedule " + scheduleName + " has been created! To find classes, type search.");
                     student.addSchedule(driver.schedule);
                 }
@@ -541,9 +541,17 @@ public class Driver {
 
             }
             else if (userInput.equalsIgnoreCase("delete")){
+                System.out.println("Your schedules are: ");
+                for(Schedule s : student.getSchedules()){
+                    System.out.println(s.getTitle());
+                }
                 System.out.println("Enter the name of the schedule to be deleted");
                 String scheduleName = scnr.nextLine();
                 student.removeSchedule(scheduleName);
+                System.out.println("Your remaining schedules are:");
+                for(Schedule e : student.getSchedules()){
+                    System.out.println(e.getTitle());
+                }
             }
             else if (userInput.equalsIgnoreCase("remove")){
                 System.out.println("Enter number next to the course you wish to delete");
