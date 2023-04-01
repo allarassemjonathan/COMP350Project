@@ -75,7 +75,7 @@ public class Search {
             if (this.filters.containsKey("code")) {
                 for (String code : filters.get("code")) {
                     if (((c.getDept() + " " + c.getCourseNum()).contains(code)) && !codes.contains(c)) {
-                         dates.add(c);
+                         codes.add(c);
                     }
                 }
             }
