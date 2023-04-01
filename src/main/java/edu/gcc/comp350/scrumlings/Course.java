@@ -1,6 +1,8 @@
 package edu.gcc.comp350.scrumlings;
 
 
+import java.util.Arrays;
+
 public class Course {
     // Member variables
     private String title;
@@ -49,6 +51,15 @@ public class Course {
 
     public Course(String name){
         this.title= name;
+    }
+
+    public Course(String title, String professor, String[] date, String dept, int courseNum, Character section) {
+        this.title = title;
+        this.professor = professor;
+        this.date = date;
+        this.dept = dept;
+        this.courseNum = courseNum;
+        this.section = section;
     }
 
     // Getters and Setters
@@ -141,11 +152,12 @@ public class Course {
     public String toString() {
         String dateString = "";
 
-        String result = dept + " " + courseNum + " " + section + " " + title + " " ;
+        String result = dept + "," + courseNum + "," + section + "," + title;
+        result+=",[";
         for (String dateElement : date){
-            result+=" " + date;
+            result+=" " + Arrays.toString(date);
         }
-        result += " " + professor;
+        result += "]," + professor;
         return result;
     }
 

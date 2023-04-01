@@ -1,5 +1,7 @@
 package edu.gcc.comp350.scrumlings;
 
+import com.sun.jdi.IntegerValue;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -32,6 +34,13 @@ class Schedule {
         return savedStatus;
     }
 
+    public String toString(){
+        String res = "";
+        for (Course c : this.getCourses()){
+            res+= c.toString() +"\n";
+        }
+        return res;
+    }
     public void setSavedStatus(boolean status) { savedStatus = status; }
 
     public ArrayList<Course> getCourses() {
@@ -39,6 +48,17 @@ class Schedule {
     }
 
     public Schedule(File f) {
+
+//        String result = dept + ", " + courseNum + ", " + section + ", " + title;
+//        for (String dateElement : date){
+//            result+=", " + date;
+//        }
+//        result += ", " + professor;
+
+        //create a schedule
+        Schedule schedule = new Schedule();
+        //create a list of courses
+        ArrayList<Course> listCourses = new ArrayList<>();
         this.title = f.getName().substring(0, f.getName().length() - 9);
         if (f.exists() && f.isFile()) {
             try (BufferedReader reader = new BufferedReader(new FileReader(f))) {
@@ -52,12 +72,22 @@ class Schedule {
                 // TODO parse courses into schedule
                 Scanner inline = new Scanner(fileContent);
                 while(inline.hasNext()){
-                    String portion = inline.nextLine();
-                    Character day = portion.charAt(0);
+                    String classString = inline.nextLine();
+                    String [] arrayCourses = classString.split(",");
+                    String dept = arrayCourses[0];
+                    int courseNum = Integer.valueOf(arrayCourses[1]);
+                    Character section = arrayCourses[2].charAt(0);
+                    String title = arrayCourses[3];
+                    String [] date = arrayCourses[4].replace("[", "").replace("]", "").split(" ");
+                    String professor = arrayCourses[5];
+                    Course c = new Course(title, professor, date,dept, courseNum, section);
+                    listCourses.add(c);
+                    schedule.setCourses(listCourses);
                 }
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+            System.out.println(schedule.DisplaySchedule());
         }
     }
     public void setCourses(ArrayList<Course> courses) {
@@ -97,17 +127,17 @@ class Schedule {
                 }
             }
         }
-        String out = "||";
+        String out = " " + this.getTitle() + "\n";
         for (Character c: calendar.keySet()){
-            out += c + " |";
+            out += c + " ";
             ArrayList<Course> els = calendar.get(c);
             for (Course el : els){
-                out+= el.getTitle() + "|";
+                out+= el.getTitle() + "-";
 //                for (String part : el.getDate()){
 //                    out += part + " ";
 //                }
             }
-            out += "|\n";
+            out += "\n";
         }
         return out;
     }
@@ -120,7 +150,6 @@ class Schedule {
         System.out.println("Adding a course");
         if (courses.isEmpty()) {
             this.courses.add(c);
-            System.out.println("empty adding");
         } else {
             //boolean conflict = true;
             boolean b = true;
@@ -129,7 +158,6 @@ class Schedule {
                 //for each course in Schedule.course compare date to c.date
                 b = is_conflict(c.getDate(), this.courses.get(i).getDate());
                 // System.out.println(b);
-                System.out.println("non-empty adding");
                 if(b) {
                     break;
                 }

@@ -57,14 +57,21 @@ public class Student {
     }
 
     public void removeSchedule(String str){
-        for(int i = 0; i < this.schedules.size(); i++){
-            Schedule s = this.schedules.get(i);
-            if(str.equals(s.getTitle())){
-                this.schedules.remove(s);
-                System.out.println("Your schedule " + str + " has been deleted");
-            }else{
-                System.out.println("Schedule " + str + " not found please try again");
+
+        if(this.schedules.size()>0){
+            for(int i = 0; i < this.schedules.size(); i++){
+                Schedule s = this.schedules.get(i);
+                System.out.println(s.toString());
+                if(str.equals(s.getTitle())){
+                    this.schedules.remove(i);
+                    System.out.println("Your schedule " + str + " has been deleted");
+                }else{
+                    System.out.println("Schedule " + str + " not found please try again");
+                }
             }
+        }
+        else{
+            System.out.println("Create a schedule first.\nFollow instructions at the top of the page if confused");
         }
     }
 
