@@ -152,12 +152,12 @@ public class Course {
     public String toString() {
         String dateString = "";
 
-        String result = dept + "," + courseNum + "," + section + "," + title;
-        result+=",[";
-        for (String dateElement : date){
-            result+=" " + Arrays.toString(date);
-        }
-        result += "]," + professor;
+        String result = dept + "," + courseNum + "," + section + "," + title + ",";
+        result+=" " + Arrays.toString(date);
+        //for (String dateElement : date){
+            //result+=" " + Arrays.toString(date);
+        //}
+        result += "," + professor;
         return result;
     }
 
