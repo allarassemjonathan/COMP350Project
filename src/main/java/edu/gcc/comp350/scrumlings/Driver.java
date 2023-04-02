@@ -467,7 +467,7 @@ public class Driver {
                     System.out.println("If you would like to add a filter to your search, enter title, date, or code. " +
                             "Otherwise enter skip.");
                     String type = scnr.nextLine();
-                    String filter;
+                    String filter = "";
                     while(!type.equalsIgnoreCase("skip")
                             && !type.equalsIgnoreCase("title")
                             && !type.equals("date")
@@ -484,8 +484,19 @@ public class Driver {
                         search.addFilter(type, filter);
                     }
                     else if (type.equals("date")) {
-                        System.out.println("Enter the first day of the week followed by the start time of your search");
-                        filter = scnr.nextLine();
+
+                        while (!(filter.equalsIgnoreCase("M") ||
+                                filter.equalsIgnoreCase("T") ||
+                                filter.equalsIgnoreCase("W") ||
+                                filter.equalsIgnoreCase("R") ||
+                                filter.equalsIgnoreCase("F"))) {
+                            filter = "";
+                            System.out.println("Enter M,W,T,R, or F:");
+                            filter += scnr.nextLine().charAt(0);
+                        }
+                        filter += ": ";
+                        System.out.println("Enter a start time:");
+                        filter += scnr.nextLine();
                         search.addFilter(type, filter);
 
                     }

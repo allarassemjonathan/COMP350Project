@@ -57,7 +57,7 @@ public class Search {
         for (Course c: allCourses) {
             if (this.filters.containsKey("title")) {
                 for (String title : filters.get("title")) {
-                    if (c.getTitle().contains(title) && !courses.contains(c)) {
+                    if (c.getTitle().contains(title) && !resultCourses.contains(c)) {
                         resultCourses.add(c);
                     }
                 }
@@ -72,8 +72,10 @@ public class Search {
             }
 
             if (this.filters.containsKey("date")) {
+                String[] fullDate = c.getDate();
+                System.out.println(fullDate[0]);
                 for (String date : filters.get("date")) {
-                    if (((c.getDate()[1].contains(date) || c.getDate()[2].contains(date))) && !resultCourses.contains(c)) {
+                    if (fullDate[0].contains(date) && !resultCourses.contains(c)){
                         resultCourses.add(c);
                     }
                 }
