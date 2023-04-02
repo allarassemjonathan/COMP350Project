@@ -47,56 +47,38 @@ public class Search {
         }
 
     }
-    public void removeFilter(String type, String filter) {
-        if (filters.containsKey(type)) {
-            if (filters.get(type).contains(filter)) {
-                filters.get(type).remove(filter);
-            }
-        }
+    public void removeFilters() {
+        filters.clear();
     }
 
     public ArrayList<Course> searchCourses(ArrayList<Course> allCourses) {
-        ArrayList<Course> titles = new ArrayList<>();
-        ArrayList<Course> codes = new ArrayList<>();
-        ArrayList<Course> dates = new ArrayList<>();
+        ArrayList<Course> courses = new ArrayList<>();
 
         for (Course c: allCourses) {
             if (this.filters.containsKey("title")) {
                 for (String title : filters.get("title")) {
-                    if (c.getTitle().contains(title) && !titles.contains(c)) {
-                        titles.add(c);
+                    if (c.getTitle().contains(title) && !courses.contains(c)) {
+                        resultCourses.add(c);
                     }
                 }
-            }
-            else {
-                titles = allCourses; //default: no filtering
             }
 
             if (this.filters.containsKey("code")) {
                 for (String code : filters.get("code")) {
-                    if (((c.getDept() + " " + c.getCourseNum()).contains(code)) && !codes.contains(c)) {
-                         codes.add(c);
+                    if (((c.getDept() + " " + c.getCourseNum() + " " + c.getSection()).contains(code)) && !resultCourses.contains(c)) {
+                         resultCourses.add(c);
                     }
                 }
-            }
-            else {
-                codes = allCourses; //default: no filtering
             }
 
             if (this.filters.containsKey("date")) {
                 for (String date : filters.get("date")) {
-                    if (((c.getDate()[1].contains(date) || c.getDate()[2].contains(date))) && !dates.contains(c)) {
-                        dates.add(c);
+                    if (((c.getDate()[1].contains(date) || c.getDate()[2].contains(date))) && !resultCourses.contains(c)) {
+                        resultCourses.add(c);
                     }
                 }
             }
-            else {
-                dates = allCourses; //default: no filtering
-            }
 
-            if (titles.contains(c) && codes.contains(c) && dates.contains(c)) {
-                resultCourses.add(c);
-            }
 
         }
         return resultCourses;

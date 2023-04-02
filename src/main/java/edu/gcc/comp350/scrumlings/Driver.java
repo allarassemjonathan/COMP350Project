@@ -463,6 +463,7 @@ public class Driver {
                 Search search = new Search();
                 int result = 0;
                 while (searching) {
+                    search.removeFilters();
                     System.out.println("If you would like to add a filter to your search, enter title, date, or code. " +
                             "Otherwise enter skip.");
                     String type = scnr.nextLine();
@@ -496,13 +497,14 @@ public class Driver {
 
                     search.setResultCourses(search.searchCourses(allCourses));
 
+
                     for (Course c: search.getResultCourses()) {
                         System.out.println(result + ". " + c.toString());
                         result++;
                         //0. dept + number + section + title + date + professor
                     }
                     //System.out.println(search.getFilters());
-                    System.out.println("Would you like to add another filter? Y/N");
+                    System.out.println("Would you like to change the filter? Y/N");
                     if (scnr.nextLine().equalsIgnoreCase("n")) {
                         break;
                     }
