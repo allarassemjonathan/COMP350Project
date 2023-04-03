@@ -73,7 +73,6 @@ public class Search {
 
             if (this.filters.containsKey("date")) {
                 String[] fullDate = c.getDate();
-                System.out.println(fullDate[0]);
                 for (String date : filters.get("date")) {
                     if (fullDate[0].contains(date) && !resultCourses.contains(c)){
                         resultCourses.add(c);
