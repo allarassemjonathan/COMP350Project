@@ -34,10 +34,12 @@ public class Student {
         return schedules;
     }
 
+    //add a schedule to student
     public void addSchedule(Schedule s){
         this.schedules.add(s);
     }
 
+    //if a schedule exists then remove it from student
     public void removeSchedule(String str){
         if(this.schedules.size()>0){
             for(int i = 0; i < this.schedules.size(); i++){

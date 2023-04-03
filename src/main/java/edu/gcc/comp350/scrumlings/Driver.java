@@ -132,6 +132,7 @@ public class Driver {
         }
     }
 
+    //save a schedule to your computer
     private void saveSchedule() {
         if (this.schedule == null) {
             System.out.print("It looks like you don't have a title for this schedule yet, our\n" +
@@ -153,6 +154,7 @@ public class Driver {
         System.out.println("Schedule \"" + this.schedule.getTitle() + "\" has been saved to files.");
     }
 
+    //import a schedule that has already been created
     private Schedule importSchedule() {
         File[] schedules = new File(System.getProperty("user.dir") + "/schedules").listFiles();
         if(schedules.length == 0) {
@@ -166,6 +168,7 @@ public class Driver {
                 scheduleNames += s.getName().split("[.]")[0] + "  ";
             }
         }
+        //list names of found schedules
         while(true) {
             System.out.println("Here are the schedules I found on your computer," +
                     "\n" + scheduleNames +
@@ -324,7 +327,7 @@ public class Driver {
         System.out.println("Start by typing a command to do something\n" +
                 "If you are confused just type the command \"help\" and it enter ");
 
-        // main loop
+        // main logic loop
         while(true) {
             userInput = scnr.nextLine();
             // quitting
@@ -388,6 +391,7 @@ public class Driver {
             else if (userInput.equalsIgnoreCase("Import Schedule")) {
                 driver.schedule = driver.importSchedule();
             }
+            //search for a course
             else if (userInput.equalsIgnoreCase("search")){
                 boolean searching = true;
                 Search search = new Search();
@@ -398,6 +402,7 @@ public class Driver {
                             "Otherwise enter skip.");
                     String type = scnr.nextLine();
                     String filter = "";
+                    //can search by title, date, code
                     while(!type.equalsIgnoreCase("skip")
                             && !type.equalsIgnoreCase("title")
                             && !type.equals("date")
@@ -414,7 +419,7 @@ public class Driver {
                         search.addFilter(type, filter);
                     }
                     else if (type.equals("date")) {
-
+                        //enter MTWRF to search by day
                         while (!(filter.equalsIgnoreCase("M") ||
                                 filter.equalsIgnoreCase("T") ||
                                 filter.equalsIgnoreCase("W") ||
@@ -438,7 +443,7 @@ public class Driver {
 
                     search.setResultCourses(search.searchCourses(allCourses));
 
-
+                    //print list of all courses found in search
                     for (Course c: search.getResultCourses()) {
                         System.out.println(result + ". " + c.toString());
                         result++;
@@ -450,6 +455,7 @@ public class Driver {
                         break;
                     }
                 }
+                //enter the number of the course to add it to your schedule
                 if(search.getResultCourses().size()>0 && driver.schedule!=null){
                         System.out.println("Enter the number of the class you wish to add or -1 not to");
                         int courseNum;
@@ -480,6 +486,7 @@ public class Driver {
             else if (userInput.equalsIgnoreCase("automatic")){
 
             }
+            //delete a created schedule from student
             else if (userInput.equalsIgnoreCase("delete")){
                 System.out.println("Your schedules are: ");
                 for(Schedule s : student.getSchedules()){

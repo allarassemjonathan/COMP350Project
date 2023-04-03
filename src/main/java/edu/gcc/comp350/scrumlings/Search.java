@@ -50,6 +50,7 @@ public class Search {
 
     public ArrayList<Course> searchCourses(ArrayList<Course> allCourses) {
         for (Course c: allCourses) {
+            //filter by title
             if (this.filters.containsKey("title")) {
                 for (String title : filters.get("title")) {
                     if (c.getTitle().contains(title) && !resultCourses.contains(c)) {
@@ -57,6 +58,7 @@ public class Search {
                     }
                 }
             }
+            //filter by code
             if (this.filters.containsKey("code")) {
                 for (String code : filters.get("code")) {
                     if (((c.getDept() + " " + c.getCourseNum() + " " + c.getSection()).contains(code)) && !resultCourses.contains(c)) {
@@ -64,6 +66,7 @@ public class Search {
                     }
                 }
             }
+            //filter by date
             if (this.filters.containsKey("date")) {
                 String[] fullDate = c.getDate();
                 for (String date : filters.get("date")) {

@@ -1,0 +1,15 @@
+INSTALLING OUR APP
+
+1 - Download the zip
+2 - Extract the zip in a folder
+3 - Make sure you have a student_info.txt file in your project folder
+4 - Build and Run the driver.java
+
+
+Minor features we implemented that were not included in the MVP:
+
+As a user, I must be able to search classes by course number
+The system must sanitize input to protect from attacks and from crashes
+
+
+

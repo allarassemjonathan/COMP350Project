@@ -117,6 +117,7 @@ class Schedule {
                 }
             }
         }
+        //print out schedule
         String out = " " + this.getTitle() + "\n";
         for (Character c : calendar.keySet()) {
             out += c + " ";
@@ -145,11 +146,12 @@ class Schedule {
                     break;
                 }
             }
-
+            //if there is no conflict add to course
             if (!b) {
                 this.courses.add(c);
                 System.out.println("Course has been added");
             }
+            //if there is a conflict
             if (b) {
                 Scanner scnr = new Scanner(System.in);
                 String userInput = "";
@@ -179,6 +181,7 @@ class Schedule {
         System.out.println(this.courses.size() + " added.");
     }
 
+    //remove a course from a schedule
     public void removeCourse(Course c) throws Exception {
         //compare course to current schedule's list of classes
         if (courses.isEmpty()) {
@@ -187,7 +190,7 @@ class Schedule {
         this.courses.remove(c);
     }
 
-    // [M 10], [W 10] , [F 10]
+   //helper method for add course, check if course times conflict
     public boolean is_conflict(String[] time_1, String[] time_2) {
         // otherwise compare the two dates
         for (int i = 0; i < time_1.length; i++) {

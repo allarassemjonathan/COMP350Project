@@ -8,7 +8,6 @@ public class Course {
     private String title;
     private String professor;
 
-    //string[] ex = {"M 12", "W 12", "F 12"}
     private String[] date;
     private String dept;
     private int courseNum;
@@ -73,7 +72,7 @@ public class Course {
         return capacity;
     }
 
-    // Other Methods
+    // To String method for a course
     @Override
     public String toString() {
         String result = dept + "|" + courseNum + "|" + section + "|" + title + "|";
