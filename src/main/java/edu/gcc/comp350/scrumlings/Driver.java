@@ -1,11 +1,12 @@
 package edu.gcc.comp350.scrumlings;
 import java.io.*;
 import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class Driver {
     // Member Variables
     private Student student;
-   // private Schedule schedule;
     private Generator generator;
     private Search search;
     private final static ArrayList<Course> allCourses = init_courses();
@@ -159,7 +160,7 @@ public class Driver {
                                 (Objects.equals(entry.getValue().get(0), "10")),
                                 Integer.parseInt(entry.getValue().get(1)),
                                 Integer.parseInt(entry.getValue().get(2)),
-                                entry.getValue().get(3).split(","), // TODO implement
+                                entry.getValue().get(3).split(","),
                                 entry.getValue().get(4)
                         )
                 );
@@ -169,9 +170,6 @@ public class Driver {
             return null;
         }
     }
-
-
-
 
     private void saveSchedule() {
         if (this.schedule == null) {
@@ -207,7 +205,7 @@ public class Driver {
             if (f.createNewFile()) {
                 f.delete();
                 System.out.println("It appears that file doesn't exist yet.");
-                File[] schedules = new File(System.getProperty("user.dir") + "/files").listFiles();
+                File[] schedules = new File(System.getProperty("user.dir") + "/schedules").listFiles();
                 // if at least one schedules exists
                 if (schedules.length > 0) {
                     String scheduleNames = "";
@@ -226,7 +224,7 @@ public class Driver {
                         }
                         // if user selects a schedule
                         else if (scheduleNames.contains(userInput)) {
-                            f = new File(System.getProperty("user.dir") + "/files/" + userInput + ".schedule");
+                            f = new File(System.getProperty("user.dir") + "/schedules/" + userInput + ".schedule");
                             return new Schedule(f);
                         } else {
                             System.out.println("I couldn't find that one, here are the schedules I found");
@@ -259,7 +257,7 @@ public class Driver {
      * of the student to the questions. This line is run whenever
      * the student_info.txt file is empty.
      */
-    public Student questionsForStudent(){
+    public Student questionsForStudent() {
         System.out.println("Enter your name:  ");
         String studentName = scnr.nextLine();
         String studentMajor = null;
@@ -335,7 +333,7 @@ public class Driver {
         return student;
     }
 
-    public void WriteFile(){
+    public void WriteFile() {
         String filename = "student_info.txt";
         String content = this.student.getName()
                 + "\n" + this.student.getMajor()
@@ -520,8 +518,6 @@ public class Driver {
                         break;
                     }
                 }
-                //System.out.println(driver.schedule.DisplaySchedule());
-               // search.setResultCourses(search.searchCourses((allCourses)));
                 if(search.getResultCourses().size()>0 && driver.schedule!=null){
                         System.out.println("Enter the number of the class you wish to add or -1 not to");
                         int courseNum;
@@ -532,7 +528,6 @@ public class Driver {
                                     throw new Exception("Give a number in the list");
                                 }
                                 Course found = search.getResultCourses().get(courseNum);
-                                //System.out.println(found.toString());
                                 driver.schedule.addCourse(found);
                                 System.out.println("Your classes are now: ");
                                 for(Course r: driver.schedule.getCourses()){
@@ -540,7 +535,7 @@ public class Driver {
                                 }
 
                             }
-                        }catch (InputMismatchException e){
+                        } catch (InputMismatchException e){
                             System.out.println("Give a number not a string");
                         }
                     }
@@ -596,7 +591,6 @@ public class Driver {
                 }
                 else{
                     System.out.println("Here is the list of saved schedules:");
-                    //String scheduleName = scnr.nextLine();
                     // read from the directory and print all the file's name
                     String directoryPath = "schedules/";
                     File directory = new File(directoryPath);
@@ -607,7 +601,6 @@ public class Driver {
                         }
                     }
                     System.out.println("Type the name of the schedule you want to load");
-                    String scheduleName = scnr.nextLine();
                 }
             }
             // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -618,9 +611,6 @@ public class Driver {
         }
         // termination processes go here
         System.out.println("Closing program, thank you!");
-
-        // test the method constructor schedule(File f)
-        //Schedule s = new Schedule("")
     }
 
 }

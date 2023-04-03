@@ -9,7 +9,6 @@ public class Course {
     private String professor;
 
     //string[] ex = {"M 12", "W 12", "F 12"}
-
     private String[] date;
     private String dept;
     private int courseNum;
@@ -117,14 +116,16 @@ public class Course {
 
     public void setFall(boolean fall) {
         this.fall = fall;
+        this.spring = !fall;
     }
 
     public boolean isSpring() {
-        return spring;
+        return !isFall();
     }
 
     public void setSpring(boolean spring) {
         this.spring = spring;
+        this.fall = !spring;
     }
 
     public int getCredits() {
@@ -152,16 +153,9 @@ public class Course {
     public String toString() {
         String dateString = "";
 
-        String result = dept + "," + courseNum + "," + section + "," + title + ",";
+        String result = dept + "|" + courseNum + "|" + section + "|" + title + "|";
         result+=" " + Arrays.toString(date);
-        //for (String dateElement : date){
-            //result+=" " + Arrays.toString(date);
-        //}
-        result += "," + professor;
+        result += "|" + professor;
         return result;
-    }
-
-    public String vizualize(){
-        return dept + " " + courseNum + " " + section + " " + title + " " ;
     }
 }

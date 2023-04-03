@@ -6,9 +6,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Scanner;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 class Schedule {
@@ -48,47 +47,37 @@ class Schedule {
     }
 
     public Schedule(File f) {
-
-//        String result = dept + ", " + courseNum + ", " + section + ", " + title;
-//        for (String dateElement : date){
-//            result+=", " + date;
-//        }
-//        result += ", " + professor;
-
-        //create a schedule
-        Schedule schedule = new Schedule();
-        //create a list of courses
-        ArrayList<Course> listCourses = new ArrayList<>();
         this.title = f.getName().substring(0, f.getName().length() - 9);
-        if (f.exists() && f.isFile()) {
-            try (BufferedReader reader = new BufferedReader(new FileReader(f))) {
-                String line;
-                StringBuilder sb = new StringBuilder();
-                while ((line = reader.readLine()) != null) {
-                    sb.append(line);
-                    sb.append(System.lineSeparator());
-                }
-                String fileContent = sb.toString().trim();
-                // TODO parse courses into schedule
-                Scanner inline = new Scanner(fileContent);
-                while(inline.hasNext()){
-                    String classString = inline.nextLine();
-                    String [] arrayCourses = classString.split(",");
-                    String dept = arrayCourses[0];
-                    int courseNum = Integer.valueOf(arrayCourses[1]);
-                    Character section = arrayCourses[2].charAt(0);
-                    String title = arrayCourses[3];
-                    String [] date = arrayCourses[4].replace("[", "").replace("]", "").split(" ");
-                    String professor = arrayCourses[5];
-                    Course c = new Course(title, professor, date,dept, courseNum, section);
-                    listCourses.add(c);
-                    schedule.setCourses(listCourses);
-                }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+        courses = new ArrayList<>();
+        try {
+            Scanner reader = new Scanner(f);
+            while (reader.hasNextLine()) {
+                String courseString = reader.nextLine();
+                List<String> info = Arrays.asList(courseString.split("\\|"))
+                        .stream()
+                        .map(s -> s.trim())
+                        .collect(Collectors.toList());
+                String[] times = info.get(4).replace("[", "").replace("]", "").split(",");
+                for(int i = 0; i < times.length; i++)
+                    times[i] = times[i].trim();
+                Course c = new Course(
+                        info.get(0),
+                        Integer.parseInt(info.get(1)),
+                        info.get(2).charAt(0),
+                        info.get(3),
+                        true,
+                        0,
+                        0,
+                        times,
+                        info.get(4)
+                );
+                System.out.println(c.toString());
+                this.courses.add(c);
             }
-            System.out.println(schedule.DisplaySchedule());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
+
     }
     public void setCourses(ArrayList<Course> courses) {
         this.courses = courses;
@@ -118,12 +107,16 @@ class Schedule {
         System.out.println(" " + this.courses.size() + " classes in the schedule");
         for (Course course : this.courses){
             String[] times = course.getDate();
-            for (int i = 0; i < times.length; i++){
-                if (course.getDate()[i].length()!=0){
-                    Character key = course.getDate()[i].charAt(0);
-                    ArrayList<Course> temp = calendar.get(key);
-                    temp.add(course);
-                    calendar.put(key, temp);
+            for (String time : times){
+                if (time.length()!=0){
+                    Character key = time.charAt(0);
+                    System.out.println("first run " + key);
+                    if(calendar.containsKey(key)) {
+                        ArrayList<Course> temp = calendar.get(key);
+                        System.out.println("second run " + temp);
+                        temp.add(course);
+                        calendar.put(key, temp);
+                    }
                 }
             }
         }
@@ -133,9 +126,6 @@ class Schedule {
             ArrayList<Course> els = calendar.get(c);
             for (Course el : els){
                 out+= el.getTitle() + "-";
-//                for (String part : el.getDate()){
-//                    out += part + " ";
-//                }
             }
             out += "\n";
         }
@@ -197,14 +187,10 @@ class Schedule {
         }
 
     public void removeCourse(Course c) throws Exception {
-        //this.courses.add(c);
-        // works with bug?
         //compare course to current schedule's list of classes
         if (courses.isEmpty()) {
             System.out.println("Your schedule is empty");
         } else {
-            //boolean conflict = true;
-            boolean b = true;
             int i;
             for (i = 0; i < this.getCourses().size(); i++) {
                 //for each course in Schedule.course compare date to c.date
@@ -220,15 +206,9 @@ class Schedule {
 
     // [M 10], [W 10] , [F 10]
     public boolean is_conflict(String [] time_1, String [] time_2){
-       // System.out.println("Time 1: " + time_1.length);
-       //System.out.println("Time 2: " + time_2.length);
        // otherwise compare the two dates
      for (int i = 0; i < time_1.length ; i++){
-           // System.out.println(" This is comparing " + time_1[i] + " out of Time 1" );
-            // System.out.println(time_1[i]);
             for (int j = 0; j < time_2.length; j++){
-            //  System.out.println(" and this " + time_2[j] + " out of Time 2");
-                 // System.out.println(time_2[j]);
                 if (time_1[i].equals(time_2[j])){
                     return true;
                 }
@@ -240,5 +220,4 @@ class Schedule {
     public void removeCourse(int index) {
         courses.remove(index);
     }
-
 }
