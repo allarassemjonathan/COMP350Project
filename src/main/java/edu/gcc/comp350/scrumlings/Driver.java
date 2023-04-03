@@ -137,20 +137,16 @@ public class Driver {
             System.out.print("It looks like you don't have a title for this schedule yet, our\n" +
                     "system requires your schedule to have a title before it can be saved.\n" +
                     "Please enter the title for your schedule now: \n");
-            String tempTitle = scnr.nextLine();
-            this.schedule = new Schedule();
-            this.schedule.setTitle(tempTitle);
+            this.schedule = new Schedule(scnr.nextLine());
         }
         File f = new File(System.getProperty("user.dir") + "/schedules/" + this.schedule.getTitle() + ".schedule");
         try {
-            if (f.createNewFile()) {
-                PrintWriter fw = new PrintWriter(f);
-                for (Course c: this.schedule.getCourses()){
-                    fw.write(c.toString() + "\n");
-                }
-                fw.flush();
-                fw.close();
+            PrintWriter fw = new PrintWriter(f);
+            for (Course c: this.schedule.getCourses()){
+                fw.write(c.toString() + "\n");
             }
+            fw.flush();
+            fw.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -158,61 +154,39 @@ public class Driver {
     }
 
     private Schedule importSchedule() {
-        System.out.println("What is the name of your schedule?");
-        String name = scnr.nextLine();
-        File f = new File(System.getProperty("user.dir") + "/Schedules/" + name + ".schedule");
-        try {
-            // if the schedule doesn't exist
-            if (f.createNewFile()) {
-                f.delete();
-                System.out.println("It appears that file doesn't exist yet.");
-                File[] schedules = new File(System.getProperty("user.dir") + "/schedules").listFiles();
-                // if at least one schedules exists
-                if (schedules.length > 0) {
-                    String scheduleNames = "";
-                    for (File s : schedules) {
-                        if (s.getName().split("[.]")[1].equals("schedule")) {
-                            scheduleNames += s.getName().split("[.]")[0] + "  ";
-                        }
-                    }
-                    System.out.println("I was able to find the following schedules for you: \n" + scheduleNames);
-                    System.out.println("Which of those would you like to import? Type 'Quit' to abort this action.");
-                    while(true) {
-                        userInput = scnr.nextLine();
-                        // if user decides they don't want to import a schedule after all
-                        if (userInput.equalsIgnoreCase("Quit")) {
-                            return schedule;
-                        }
-                        // if user selects a schedule
-                        else if (scheduleNames.contains(userInput)) {
-                            f = new File(System.getProperty("user.dir") + "/schedules/" + userInput + ".schedule");
-                            return new Schedule(f);
-                        } else {
-                            System.out.println("I couldn't find that one, here are the schedules I found");
-                            System.out.println(scheduleNames);
-                        }
-                    }
-                } else {
-                    System.out.println("It appears you have no files saved to our system\n" +
-                            " you need to have a schedule created, and saved in order to use\n" +
-                            "this features, would you like to create a schedule now?\n");
-                    if (scnr.nextLine().equalsIgnoreCase("yes")) {
-                        return new Schedule();
-                    } else {
-                        // TODO fix bug here
-                        return schedule;
-                    }
-                }
-            } else {
-                Scanner fr = new Scanner(f);
-                return new Schedule(f);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        File[] schedules = new File(System.getProperty("user.dir") + "/schedules").listFiles();
+        if(schedules.length == 0) {
+            System.out.println("It looks like you don't have any schedules to import!" +
+                    "Try making one and saving it before using this feature.");
+            return null;
         }
-        return schedule;
+        String scheduleNames = "";
+        for (File s : schedules) {
+            if (s.getName().split("[.]")[1].equals("schedule")) {
+                scheduleNames += s.getName().split("[.]")[0] + "  ";
+            }
+        }
+        while(true) {
+            System.out.println("Here are the schedules I found on your computer," +
+                    "\n" + scheduleNames +
+                    "\nWhich on would you like to import?");
+            String name = scnr.nextLine();
+            File f = new File(System.getProperty("user.dir") + "/Schedules/" + name + ".schedule");
+            try {
+                if (f.createNewFile()) {
+                    f.delete();
+                    System.out.println("It appears that file doesn't exist. Try again or enter \"Quit\" to abort this action.");
+                } else if (scheduleNames.contains(name)) {
+                    f = new File(System.getProperty("user.dir") + "/schedules/" + name + ".schedule");
+                    return new Schedule(f);
+                } else if (name.equalsIgnoreCase("quit")) {
+                    return null;
+                }
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
-
     /**
      * @return A student object created based on the answers
      * of the student to the questions. This line is run whenever
@@ -293,7 +267,6 @@ public class Driver {
         student = new Student();
         return student;
     }
-
     public void WriteFile() {
         String filename = "student_info.txt";
         String content = this.student.getName()
@@ -314,7 +287,6 @@ public class Driver {
             e.printStackTrace();
         }
     }
-
     public void saveFile(){
         String filename = "schedules/" + this.schedule.getTitle() + ".schedule";
         String content = this.schedule.DisplaySchedule();
@@ -337,7 +309,6 @@ public class Driver {
         schedule.setSavedStatus(true);
     }
     // Other Methods
-
     public static void main(String[] args) throws Exception {
         // root/init
         System.out.println("Scrumlings Semester Scheduler!");

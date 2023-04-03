@@ -18,10 +18,6 @@ class Schedule {
     private boolean savedStatus = false;
 
     // Constructor
-    public Schedule() {
-        courses = new ArrayList<>();
-    }
-
     public Schedule(String title) {
         this.title = title;
 
