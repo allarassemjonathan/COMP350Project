@@ -16,9 +16,6 @@ public class Search {
     public HashMap<String, List<String>> getFilters() {
         return filters;
     }
-    public void setFilters(HashMap<String, List<String>> filters) {
-        this.filters = filters;
-    }
     public ArrayList<Course> getResultCourses() {
         return resultCourses;
     }
@@ -34,7 +31,7 @@ public class Search {
     }
 
     // Other Methods
-    public void addFilter(String type, String filter) throws FileNotFoundException {
+    public void addFilter(String type, String filter) {
         //adds a new search filter to type title, code, or date
         if (filters.containsKey(type)) {
             filters.get(type).add(filter);
@@ -52,8 +49,6 @@ public class Search {
     }
 
     public ArrayList<Course> searchCourses(ArrayList<Course> allCourses) {
-        ArrayList<Course> courses = new ArrayList<>();
-
         for (Course c: allCourses) {
             if (this.filters.containsKey("title")) {
                 for (String title : filters.get("title")) {
@@ -62,7 +57,6 @@ public class Search {
                     }
                 }
             }
-
             if (this.filters.containsKey("code")) {
                 for (String code : filters.get("code")) {
                     if (((c.getDept() + " " + c.getCourseNum() + " " + c.getSection()).contains(code)) && !resultCourses.contains(c)) {
@@ -70,7 +64,6 @@ public class Search {
                     }
                 }
             }
-
             if (this.filters.containsKey("date")) {
                 String[] fullDate = c.getDate();
                 for (String date : filters.get("date")) {
@@ -79,8 +72,6 @@ public class Search {
                     }
                 }
             }
-
-
         }
         return resultCourses;
     }

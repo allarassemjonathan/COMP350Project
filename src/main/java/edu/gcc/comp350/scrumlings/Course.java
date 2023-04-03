@@ -18,19 +18,7 @@ public class Course {
     private int credits;
     private int capacity;
 
-
     //Constructor
-    public Course(String title, String professor, String [] date, String dept,
-                  int courseNum, char section, boolean fall) {
-        this.title = title;
-        this.professor = professor;
-        this.date = date;
-        this.dept = dept;
-        this.courseNum = courseNum;
-        this.section = section;
-        this.fall = fall;
-        this.spring = !fall;
-    }
     public Course(String dept, int courseNum, char section, String title, boolean fall, int credits,
                   int capacity, String[] date, String professor) {
         this.dept = dept;
@@ -44,115 +32,50 @@ public class Course {
         this.date = date;
         this.professor = professor;
     }
-    public Course() {
-
-    }
-
-    public Course(String name){
-        this.title= name;
-    }
-
-    public Course(String title, String professor, String[] date, String dept, int courseNum, Character section) {
-        this.title = title;
-        this.professor = professor;
-        this.date = date;
-        this.dept = dept;
-        this.courseNum = courseNum;
-        this.section = section;
-    }
 
     // Getters and Setters
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getProfessor() {
         return professor;
-    }
-
-    public void setProfessor(String professor) {
-        this.professor = professor;
     }
 
     public String[] getDate() {
         return date;
     }
 
-    public void setDate(String[] date) {
-        this.date = date;
-    }
-
     public String getDept() {
         return dept;
-    }
-
-    public void setDept(String dept) {
-        this.dept = dept;
     }
 
     public int getCourseNum() {
         return courseNum;
     }
 
-    public void setCourseNum(int courseNum) {
-        this.courseNum = courseNum;
-    }
-
     public char getSection() {
         return section;
-    }
-
-    public void setSection(char section) {
-        this.section = section;
     }
 
     public boolean isFall() {
         return fall;
     }
-
-    public void setFall(boolean fall) {
-        this.fall = fall;
-        this.spring = !fall;
-    }
-
     public boolean isSpring() {
         return !isFall();
-    }
-
-    public void setSpring(boolean spring) {
-        this.spring = spring;
-        this.fall = !spring;
     }
 
     public int getCredits() {
         return credits;
     }
 
-    public void setCredits(int credits) {
-        this.credits = credits;
-    }
-
     public int getCapacity() {
         return capacity;
     }
 
-    public void setCapacity(int capacity) {
-        this.capacity = capacity;
-    }
-
     // Other Methods
-    public boolean sameTime(Course otherCourse) {
-        return true;
-    }
-
     @Override
     public String toString() {
-        String dateString = "";
-
         String result = dept + "|" + courseNum + "|" + section + "|" + title + "|";
         result+=" " + Arrays.toString(date);
         result += "|" + professor;

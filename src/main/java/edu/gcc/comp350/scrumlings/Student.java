@@ -18,38 +18,20 @@ public class Student {
     public String getName() {
         return name;
     }
-    public void setName(String name) {
-        this.name = name;
-    }
     public String getEmail() {
         return email;
-    }
-    public void setEmail(String email) {
-        this.email = email;
     }
     public String getMajor() {
         return major;
     }
-    public void setMajor(String major) {
-        this.major = major;
-    }
     public String getAdvisor() {
         return advisor;
-    }
-    public void setAdvisor(String advisor) {
-        this.advisor = advisor;
     }
     public int getSemester() {
         return semester;
     }
-    public void setSemester(int semester) {
-        this.semester = semester;
-    }
     public ArrayList<Schedule> getSchedules() {
         return schedules;
-    }
-    public void setSchedules(ArrayList<Schedule> schedules) {
-        this.schedules = schedules;
     }
 
     public void addSchedule(Schedule s){
@@ -57,7 +39,6 @@ public class Student {
     }
 
     public void removeSchedule(String str){
-
         if(this.schedules.size()>0){
             for(int i = 0; i < this.schedules.size(); i++){
                 Schedule s = this.schedules.get(i);
@@ -74,7 +55,6 @@ public class Student {
             System.out.println("Create a schedule first.\nFollow instructions at the top of the page if confused");
         }
     }
-
 
     // Constructor
     public Student(String name, String email, String major, String advisor, int semester) {

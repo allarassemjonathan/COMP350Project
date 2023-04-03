@@ -20,8 +20,7 @@ public class Driver {
             "\ndisplay: allows you to display a schedule" +
             "\nsave schedule: saves the schedule you are currently working on to your computer" +
             "\nimport schedule: allows you to pull up a schedule already on your computer.";
-
-    private String[] majors = {
+    private static String[] majors = {
             "Mathematics", "Computer Science", "Electrical Engineering", "Mechanical Engineering",
             "Chemistry", "Biology", "Physics", "Political Science", "Data Science", "Philosophy",
             "Conservation Biology", "Exercise Science", "Computer Engineering", "Communication and Art",
@@ -30,44 +29,6 @@ public class Driver {
     public Driver(){
 
     }
-    // Constructor
-    public Driver(Student student, Schedule schedule, Generator generator, Search search) {
-        this.student = student;
-        this.schedule = schedule;
-        this.generator = generator;
-        this.search = search;
-    }
-
-    // Getters and Setters
-    public Student getStudent() {
-        return student;
-    }
-    public void setStudent(Student student) {
-        this.student = student;
-    }
-
-    public Schedule getSchedule() {
-        return schedule;
-    }
-    public void setSchedule(Schedule schedule) {
-        this.schedule = schedule;
-    }
-    public Generator getGenerator() { return generator; }
-
-    public void setGenerator(Generator generator) {
-        this.generator = generator;
-    }
-    public Search getSearch() {
-        return search;
-    }
-    public void setSearch(Search search) {
-        this.search = search;
-    }
-
-    public String[] getMajors() {
-        return this.majors;
-    }
-
     private static ArrayList<Course> init_courses() {
         ArrayList<Course> ret = new ArrayList<>();
         HashMap<String, ArrayList<String>> courses = new HashMap<>();
@@ -587,7 +548,6 @@ public class Driver {
                     else{
                         System.out.println("No schedule created\nFollow instructions at the top of the page if confused");
                     }
-
                 }
                 else{
                     System.out.println("Here is the list of saved schedules:");
